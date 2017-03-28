@@ -1,0 +1,18 @@
+<section class="content-header">
+
+  <h2><%= gettext "New  %{name}", name: "User!" %></h2>
+  <ol class="breadcrumb">
+
+    <li><a href="<%= page_path(@conn,:index) %>"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="<%= user_path(@conn,:index) %>"><i class="fa fa-user"></i> List User</a></li>
+    <li class="active">Create</li>
+  </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+
+  <!-- Default box -->
+  <div class="box">
+    <%= render "form.html", changeset: @changeset, action: user_path(@conn, :create) %>
+  </div>
+</div>
