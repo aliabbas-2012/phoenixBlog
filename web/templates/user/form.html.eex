@@ -4,7 +4,18 @@
       <div class="alert alert-danger">
         <p>Oops, something went wrong! Please check the errors below.</p>
       </div>
+      <div id="error_explanation">
+        <ul>
+          <%= for  msg <- BlogTest.ErrorHelpers.error_string_from_changeset(@changeset) do %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+
     <% end %>
+
+
+    <% IO.inspect f.errors %>
     <div class="form-group">
       <label for="email">Email</label>
       <%= text_input f, :email,class: 'form-control' %>
@@ -21,6 +32,12 @@
       <label for="email">Last Name</label>
       <%= text_input f, :last_name,class: 'form-control' %>
     </div>
+    <%= if @changeset.data.id ==nil do %>
+      <div class="form-group">
+        <label for="password">Password</label>
+          <%= password_input f, :password,class: 'form-control' %>
+      </div>
+    <% end %>
     <div class="form-group">
       <label for="email">Gender</label>
       <%= select f, :gender,["Male": "Male", "Female": "Female"],class: 'form-control',prompt: "Choose your Gender" %>

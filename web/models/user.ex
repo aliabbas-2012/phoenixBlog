@@ -23,9 +23,30 @@ defmodule BlogTest.User do
       |>validate_required([:user_name,:email,:first_name,:last_name])
       |>unique_constraint(:email)
       |>unique_constraint(:user_name)
+      |>validate_password
+      |>before_save
 
   end
-
+  #special condition if record found
+  defp validate_password(changeset) do
+    #only apply when record is new
+    if  get_field(changeset, :id)==nil do
+      changeset
+        |> validate_required([:password])
+        |> validate_length(:password, min: 5)
+    else
+      changeset
+    end
+  end
+  #call always at the end
+  defp before_save(changeset) do
+    if changeset.valid? && get_field(changeset, :id)==nil do
+      changeset
+      |>  Ecto.Changeset.put_change(:password, Base.encode16(:erlang.md5(get_field(changeset, :password)), case: :lower))
+    else
+      changeset
+    end
+  end
 
 
 end

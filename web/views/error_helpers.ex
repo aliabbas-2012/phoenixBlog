@@ -37,4 +37,13 @@ defmodule BlogTest.ErrorHelpers do
       Gettext.dgettext(BlogTest.Gettext, "errors", msg, opts)
     end
   end
+
+  @doc """
+    A accumlative showing error
+  """
+  def error_string_from_changeset(changeset) do
+    Enum.map(changeset.errors, fn {k, v} ->
+       "#{Phoenix.Naming.humanize(k)} #{translate_error(v)}"
+    end) 
+  end
 end

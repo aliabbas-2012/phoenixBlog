@@ -1,0 +1,3 @@
+<p>
+  <strong>Welcome<strong> <%= @model.user_name %> to Blog Test!
+</p>

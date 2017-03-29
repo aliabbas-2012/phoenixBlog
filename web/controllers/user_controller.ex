@@ -2,8 +2,14 @@ defmodule BlogTest.UserController do
   use BlogTest.Web, :controller
 
   plug :put_layout, "admin.html"
-  
+
   alias BlogTest.User
+  alias BlogTest.Email
+  alias BlogTest.Mailer
+
+  require IEx
+
+
 
   def index(conn, _params) do
     users = Repo.all(User)
@@ -20,6 +26,8 @@ defmodule BlogTest.UserController do
 
     case Repo.insert(changeset) do
       {:ok, _user} ->
+        Email.welcome_and_confirmation_email(%{changes: changes} = changeset)
+        |> BlogTest.Mailer.deliver_now
         conn
         |> put_flash(:info, "User created successfully.")
         |> redirect(to: user_path(conn, :index))
@@ -36,6 +44,9 @@ defmodule BlogTest.UserController do
   def edit(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
     changeset = User.changeset(user)
+    IO.inspect("---------------")
+    IO.inspect(changeset)
+    IO.inspect("---------------")
     render(conn, "edit.html", user: user, changeset: changeset)
   end
 
