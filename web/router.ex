@@ -24,6 +24,13 @@ defmodule BlogTest.Router do
 
   end
 
+  scope "/auth", BlogTest do
+    pipe_through :browser
+    resources "/", AuthController
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", BlogTest do
   #   pipe_through :api

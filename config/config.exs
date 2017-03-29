@@ -36,3 +36,12 @@ config :blog_test, BlogTest.Mailer,
   tls: :if_available, # can be `:always` or `:never`
   ssl: false, # can be `true`
   retries: 1
+
+  config :ueberauth, Ueberauth,
+    providers: [
+      facebook: { Ueberauth.Strategy.Github, [] }
+    ]
+
+ config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
+    client_id: System.get_env("FACEBOOK_CLIENT_ID"),
+    client_secret: System.get_env("FACEBOOK_CLIENT_SECRET")

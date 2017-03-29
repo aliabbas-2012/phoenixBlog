@@ -19,7 +19,7 @@ defmodule BlogTest.Mixfile do
   def application do
     [mod: {BlogTest, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex,:bamboo]]
+                    :phoenix_ecto, :postgrex,:bamboo,:ueberauth,:ueberauth_facebook]]
   end
 
   # Specifies which paths to compile per environment.
@@ -39,7 +39,9 @@ defmodule BlogTest.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:bamboo, "~> 0.7"},
-     {:bamboo_smtp, "~> 1.2.1"}
+     {:bamboo_smtp, "~> 1.2.1"},
+     {:ueberauth, "~> 0.4"},
+     {:ueberauth_facebook, "~> 0.6"}
    ]
   end
 
