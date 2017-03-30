@@ -11,18 +11,14 @@ defmodule BlogTest.AuthController do
   end
 
   def create(conn,%{"session"=>session_params} = params) do
-    IO.inspect("----------")
-    IO.inspect(session_params)
 
     case find_user_by_email(session_params) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, "Welcome back!")
-        |> put_session(:user_id, user.id)
-        |> redirect(to: page_path(conn, :index))
+        |> signin(user)
       {:error, _reason} ->
         conn
-        |> put_flash(:error, "Error signing in")
+        |> put_flash(:error, "Error signing in,Please double check your email or password")
         |> redirect(to: auth_path(conn, :new))
     end
 
@@ -33,9 +29,9 @@ defmodule BlogTest.AuthController do
 
   end
 
-  defp signin(conn, changeset) do
+  defp signin(conn, user) do
     conn
-    |> put_flash(:info, "Welcome back!")
+    |> put_flash(:info, "Welcome to  #{user.first_name} !")
     |> put_session(:user_id, user.id)
     |> redirect(to: page_path(conn, :index))
   end
@@ -45,9 +41,8 @@ defmodule BlogTest.AuthController do
       nil ->
         {:error, nil}
       user ->
-        IO.puts(session_params['password'])
         cond do
-          Base.encode16(:erlang.md5(session_params["password"]), case: :lower) == user.password ->
+          BlogTest.ApplicationHelpers.to_md5(session_params["password"]) == user.password ->
               {:ok, user}
           true ->
               {:error, nil}

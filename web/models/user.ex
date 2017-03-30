@@ -2,6 +2,9 @@ defmodule BlogTest.User do
   use BlogTest.Web, :model
 
   alias BlogTest.Post
+  alias BlogTest.ApplicationHelpers
+
+  # after_load :calc
 
   schema "users" do
     field :user_name, :string
@@ -12,6 +15,7 @@ defmodule BlogTest.User do
     field :gender, :string
     field :provider, :string
     field :token, :string
+    field :full_name, :string, virtual: true
     has_many(:posts, Post)
 
     timestamps()
@@ -42,10 +46,14 @@ defmodule BlogTest.User do
   defp before_save(changeset) do
     if changeset.valid? && get_field(changeset, :id)==nil do
       changeset
-      |>  Ecto.Changeset.put_change(:password, Base.encode16(:erlang.md5(get_field(changeset, :password)), case: :lower))
+      |> Ecto.Changeset.put_change(:password,ApplicationHelpers.to_md5(get_field(changeset, :password)))
     else
       changeset
     end
+  end
+
+  def calc(changeset) do
+
   end
 
 

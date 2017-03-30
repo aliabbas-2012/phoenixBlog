@@ -136,7 +136,8 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="<%= static_path(@conn, "/images/admin_lte/user2-160x160.jpg") %>" class="user-image" alt="User Image">
-              <span class="hidden-xs">Alexander Pierce</span>
+
+              <span class="hidden-xs"><%= user_full_name(@conn.assigns[:user]) %></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -144,8 +145,8 @@
                 <img src="<%= static_path(@conn, "/images/admin_lte/user2-160x160.jpg") %>" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  <%= user_full_name(@conn.assigns[:user]) %>
+                  <small>Member since -</small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -195,8 +196,8 @@
           <img src="<%= static_path(@conn, "/images/admin_lte/user2-160x160.jpg") %>" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <p><%= user_full_name(@conn.assigns[:user]) %></p>
+          <a href="javascript:void(0)"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
       <!-- search form -->
@@ -239,9 +240,12 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= if get_flash(@conn, :info) do   %>
+          <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <% end %>
+        <%= if get_flash(@conn, :error) do   %>
+          <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <% end %>
       <%= render @view_module, @view_template, assigns %>
     <!-- /.content -->
   </div>

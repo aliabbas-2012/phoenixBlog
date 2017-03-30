@@ -23,6 +23,7 @@ defmodule BlogTest.Web do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import BlogTest.ApplicationHelpers
     end
   end
 
@@ -35,6 +36,7 @@ defmodule BlogTest.Web do
       import Ecto.Query
 
       import BlogTest.Router.Helpers
+      import BlogTest.ApplicationHelpers
       import BlogTest.Gettext
     end
   end
@@ -52,6 +54,7 @@ defmodule BlogTest.Web do
       import BlogTest.Router.Helpers
       import BlogTest.ErrorHelpers
       import BlogTest.Gettext
+      import BlogTest.ApplicationHelpers
     end
   end
 
