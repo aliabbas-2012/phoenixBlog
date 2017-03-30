@@ -10,6 +10,24 @@ defmodule BlogTest.AuthController do
     render(conn, "new.html")
   end
 
+  #For logout
+  def delete(conn,%{"id"=>user_id} = params) do
+    IO.puts user_id
+    IO.puts user_id === conn.assigns[:user].id
+    IO.puts "----"
+    cond do
+      user_id == conn.assigns[:user].id ->
+        conn
+           |> configure_session(drop: true)
+           |> put_flash(:info, "successfully signed out!")
+           |> redirect(to: auth_path(conn, :new))
+      true ->
+        conn
+           |> put_flash(:error, "Invalid Request!")
+           |> redirect(to: page_path(conn, :index))
+    end
+  end
+
   def create(conn,%{"session"=>session_params} = params) do
 
     case find_user_by_email(session_params) do
