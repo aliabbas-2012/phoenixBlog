@@ -89,8 +89,8 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="<%= user_path(@conn,:index) %>"><i class="fa fa-circle-o"></i> User</a></li>
-            <li><a href="../forms/advanced.html"><i class="fa fa-circle-o"></i> Category</a></li>
-            <li><a href="../forms/editors.html"><i class="fa fa-circle-o"></i> Post</a></li>
+            <li><a href="<%= category_path(@conn,:index) %>"><i class="fa fa-circle-o"></i> Category</a></li>
+            <li><a href="<%= post_path(@conn,:index) %>"><i class="fa fa-circle-o"></i> Post</a></li>
           </ul>
         </li>
 

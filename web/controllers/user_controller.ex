@@ -25,6 +25,7 @@ defmodule BlogTest.UserController do
   def create(conn, %{"user" => user_params}) do
     changeset = User.changeset(%User{}, user_params)
 
+
     case Repo.insert(changeset) do
       {:ok, _user} ->
         Email.welcome_and_confirmation_email(%{changes: changes} = changeset)
@@ -45,9 +46,7 @@ defmodule BlogTest.UserController do
   def edit(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
     changeset = User.changeset(user)
-    IO.inspect("---------------")
-    IO.inspect(changeset)
-    IO.inspect("---------------")
+
     render(conn, "edit.html", user: user, changeset: changeset)
   end
 

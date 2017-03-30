@@ -52,9 +52,6 @@ defmodule BlogTest.User do
     end
   end
 
-  def calc(changeset) do
-
-  end
 
 
 end

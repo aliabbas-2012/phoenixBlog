@@ -1,0 +1,41 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+
+  <h2><%= gettext "Show  %{name}", name: "Category!" %></h2>
+  <ol class="breadcrumb">
+
+    <li><a href="<%= page_path(@conn,:index) %>"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="<%= category_path(@conn,:new) %>"><i class="fa fa-user"></i> Create Category</a></li>
+    <li><a href="<%= category_path(@conn,:edit,@category) %>"><i class="fa fa-list"></i> Edit Category</a></li>
+    <li><a href="<%= category_path(@conn,:index) %>"><i class="fa fa-list"></i> List Category</a></li>
+    <li class="active">Show</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+  <!-- Default box -->
+  <div class="box">
+    <div class="box-body">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th>Name</th>
+              <td><%= @category.name %></td>
+          </tr>
+
+          <tr>
+            <th>Owner</th>
+            <td><%= @category.user && user_full_name(@category.user)|| "" %></td>
+          </tr>
+
+        </tbody>
+
+      </table>
+    </div>
+    <!-- /.box-footer-->
+  </div>
+  <!-- /.box -->
+
+</section>
