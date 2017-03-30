@@ -2,6 +2,7 @@ defmodule BlogTest.UserController do
   use BlogTest.Web, :controller
 
   plug :put_layout, "admin.html"
+  plug BlogTest.Plugs.CheckAuth
 
   alias BlogTest.User
   alias BlogTest.Email
