@@ -31,7 +31,7 @@ defmodule BlogTest.PostController do
   end
 
   def show(conn, %{"id" => id}) do
-    post = Repo.get!(Post, id)|> Repo.preload(:user)
+    post = Repo.get!(Post, id)|> Repo.preload(:user) |> Repo.preload(:categories)
     render(conn, "show.html", post: post)
   end
 

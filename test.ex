@@ -23,3 +23,11 @@ category1 = Repo.get!(Category, 1)
 category2 = Repo.get!(Category, 2)
 changeset = post1 |> Repo.preload(:categories) |>  Ecto.Changeset.change |> Ecto.Changeset.put_assoc(:categories, [category1,category2])
 Repo.update!(changeset)
+
+
+
+post.categories |> Enum.find(fn {key, val} -> key == 'name' end)
+
+Enum.map(post.categories, fn {k, v} -> {v} end)
+
+people = post.categories |> Enum.map(&[&1.name])

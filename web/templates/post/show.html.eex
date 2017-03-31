@@ -36,6 +36,12 @@
             <th>Content</th>
               <td><%= @post.content %></td>
           </tr>
+          <tr>
+            <th>Categories</th>
+            <td>
+              <%= @post.categories |> Enum.map(&[&1.name]) |> List.flatten |> Enum.join(",") %>
+            </td>
+          </tr>
         </tbody>
 
       </table>
