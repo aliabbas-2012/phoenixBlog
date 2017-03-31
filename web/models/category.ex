@@ -6,7 +6,7 @@ defmodule BlogTest.Category do
   schema "categories" do
     field :name, :string
     belongs_to(:user, User)
-    many_to_many :posts, BlogTest.Post, join_through: "categories_posts"
+    many_to_many :posts, BlogTest.Post, join_through: "categories_posts",on_replace: :delete,on_delete: :delete_all
     timestamps()
   end
 
