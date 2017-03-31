@@ -1,11 +1,12 @@
 defmodule BlogTest.Category do
   use BlogTest.Web, :model
 
-  alias BlogTest.User 
+  alias BlogTest.User
 
   schema "categories" do
     field :name, :string
     belongs_to(:user, User)
+    many_to_many :posts, BlogTest.Post, join_through: "categories_posts"
     timestamps()
   end
 

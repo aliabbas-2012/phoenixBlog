@@ -12,11 +12,8 @@ defmodule BlogTest.AuthController do
 
   #For logout
   def delete(conn,%{"id"=>user_id} = params) do
-    IO.puts user_id
-    IO.puts user_id === conn.assigns[:user].id
-    IO.puts "----"
     cond do
-      user_id == conn.assigns[:user].id ->
+      to_string(user_id) == to_string(conn.assigns[:user].id) ->
         conn
            |> configure_session(drop: true)
            |> put_flash(:info, "successfully signed out!")

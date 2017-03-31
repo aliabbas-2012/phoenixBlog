@@ -8,6 +8,7 @@ defmodule BlogTest.Post do
     field :slug, :string
     field :content,:string
     # field :user_id,:integer
+    many_to_many :categories, BlogTest.Category, join_through: "categories_posts"
     belongs_to(:user,User)
     timestamps()
   end
