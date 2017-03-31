@@ -25,6 +25,13 @@
     </div>
 
     <div class="form-group">
+      <label for="content">Categories</label>
+      <%= multiple_select f, :categories_ids, @categories, class: "form-control" %>
+    </div>
+
+
+
+    <div class="form-group">
       <%= submit "Submit", class: "btn btn-primary" %>
     </div>
   <% end %>

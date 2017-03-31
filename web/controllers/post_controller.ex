@@ -4,6 +4,8 @@ defmodule BlogTest.PostController do
   plug BlogTest.Plugs.CheckAuth
 
   alias BlogTest.Post
+  alias BlogTest.Category
+  require IEx
 
   def index(conn, _params) do
     posts = Repo.all from p in Post,
@@ -14,19 +16,26 @@ defmodule BlogTest.PostController do
 
   def new(conn, _params) do
     changeset = Post.changeset(%Post{})
-    render(conn, "new.html", changeset: changeset)
+    categories = Repo.all(Category) |> Enum.map(&{&1.name, &1.id})
+    render(conn, "new.html", changeset: changeset,categories: categories)
   end
 
   def create(conn, %{"post" => post_params}) do
+    #post categories
+    posted_categories = post_params["categories_ids"] && from(p in Category, where: p.id in ^Enum.map(post_params["categories_ids"],fn(x)-> String.to_integer(x) end))  |> Repo.all  || []
+
     changeset = Post.changeset(%Post{}, post_params)
     |> Ecto.Changeset.put_change(:user_id,conn.assigns[:user].id)
+    |> Ecto.Changeset.put_assoc(:categories, posted_categories)
+
     case Repo.insert(changeset) do
       {:ok, _post} ->
         conn
         |> put_flash(:info, "Post created successfully.")
         |> redirect(to: post_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        categories = Repo.all(Category) |> Enum.map(&{&1.name, &1.id})
+        render(conn, "new.html", changeset: changeset,categories: categories)
     end
   end
 
@@ -36,17 +45,22 @@ defmodule BlogTest.PostController do
   end
 
   def edit(conn, %{"id" => id}) do
-    post = Repo.get!(Post, id)
+    post = Repo.get!(Post, id)|> Repo.preload(:categories)
     changeset = Post.changeset(post)
+    categories = Repo.all(Category) |> Enum.map(&{&1.name, &1.id})
 
-
-    render(conn, "edit.html", post: post, changeset: changeset)
+    render(conn, "edit.html", post: post, changeset: changeset,categories: categories)
   end
 
   def update(conn, %{"id" => id, "post" => post_params}) do
-    post = Repo.get!(Post, id)
+
+    #post categories
+    posted_categories = post_params["categories_ids"] && from(p in Category, where: p.id in ^Enum.map(post_params["categories_ids"],fn(x)-> String.to_integer(x) end))  |> Repo.all  || []
+
+    post = Repo.get!(Post, id) |>  Repo.preload(:categories)
     changeset = Post.changeset(post, post_params)
     |> Ecto.Changeset.put_change(:user_id,conn.assigns[:user].id)
+    |> Ecto.Changeset.put_assoc(:categories, posted_categories)
 
 
     case Repo.update(changeset) do
@@ -55,7 +69,8 @@ defmodule BlogTest.PostController do
         |> put_flash(:info, "Post updated successfully.")
         |> redirect(to: post_path(conn, :show, post))
       {:error, changeset} ->
-        render(conn, "edit.html", post: post, changeset: changeset)
+        categories = Repo.all(Category) |> Enum.map(&{&1.name, &1.id})
+        render(conn, "edit.html", post: post, changeset: changeset,categories: categories)
     end
   end
 

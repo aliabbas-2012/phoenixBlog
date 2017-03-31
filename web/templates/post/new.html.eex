@@ -13,6 +13,6 @@
 
   <!-- Default box -->
   <div class="box">
-    <%= render "form.html", changeset: @changeset, action: post_path(@conn, :create) %>
+    <%= render "form.html", changeset: @changeset, action: post_path(@conn, :create),categories: @categories %>
   </div>
 </div>

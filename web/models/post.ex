@@ -8,7 +8,8 @@ defmodule BlogTest.Post do
     field :slug, :string
     field :content,:string
     # field :user_id,:integer
-    many_to_many :categories, BlogTest.Category, join_through: "categories_posts"
+    # It is necessary to use the option on_replace: :delete in categories schema
+    many_to_many :categories, BlogTest.Category, join_through: "categories_posts",on_replace: :delete,on_delete: :delete_all
     belongs_to(:user,User)
     timestamps()
   end
