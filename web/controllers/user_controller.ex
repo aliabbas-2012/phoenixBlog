@@ -5,6 +5,7 @@ defmodule BlogTest.UserController do
   plug BlogTest.Plugs.CheckAuth
 
   alias BlogTest.User
+  alias BlogTest.Address
   alias BlogTest.Email
   alias BlogTest.Mailer
 
@@ -18,7 +19,9 @@ defmodule BlogTest.UserController do
   end
 
   def new(conn, _params) do
-    changeset = User.changeset(%User{}, %{})
+    changeset = User.changeset(%User{addresses: [%Address{}]}, %{})
+
+
     render(conn, "new.html", changeset: changeset)
   end
 

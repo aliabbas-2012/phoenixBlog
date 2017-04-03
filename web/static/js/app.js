@@ -33,3 +33,18 @@ for (var i=0; i<len; ++i) {
     return false
   }, false)
 }
+// ADD adresses
+$(document).ready(function() {
+  $(document).on("click","#add_address",function(e) {
+
+      e.preventDefault();
+
+    let time = new Date().getTime()
+    let template = $(this).data('template');
+    console.log(template);
+    var uniq_template = template.replace(/\[0]/g, `[${time}]`)
+    uniq_template = uniq_template.replace(/_0_/g, `_${time}_`)
+    $("div.panel.panel-primary.addresses").append(uniq_template);
+
+  })
+});

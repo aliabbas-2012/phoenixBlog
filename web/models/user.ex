@@ -2,6 +2,7 @@ defmodule BlogTest.User do
   use BlogTest.Web, :model
 
   alias BlogTest.Post
+  alias BlogTest.Address
   alias BlogTest.ApplicationHelpers
 
   # after_load :calc
@@ -17,6 +18,7 @@ defmodule BlogTest.User do
     field :token, :string
     field :full_name, :string, virtual: true
     has_many(:posts, Post)
+    has_many(:addresses, Address)
 
     timestamps()
   end
