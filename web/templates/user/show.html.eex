@@ -48,6 +48,34 @@
         </tbody>
 
       </table>
+
+      <div class="panel panel-primary addresses">
+            <div class="panel-heading">Addresses</div>
+            <%= for address <- @user.addresses do %>
+              <div class="panel-body">
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <th>Address Type</th>
+                      <td><%= address.address_type %></td>
+                    </tr>
+                    <tr>
+                      <th>Street</th>
+                      <td><%= address.street %></td>
+                    </tr>
+                    <tr>
+                      <th>Post code</th>
+                      <td><%= address.post_code %></td>
+                    </tr>
+                    <tr>
+                      <th>City</th>
+                      <td><%= address.city %></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            <% end %>
+      </div>
     </div>
     <!-- /.box-footer-->
   </div>
