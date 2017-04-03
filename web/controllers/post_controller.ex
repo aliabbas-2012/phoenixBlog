@@ -2,6 +2,7 @@ defmodule BlogTest.PostController do
   use BlogTest.Web, :controller
   plug :put_layout, "admin.html"
   plug BlogTest.Plugs.CheckAuth
+  plug :check_post_owner when action in [:update, :edit, :delete]
 
   alias BlogTest.Post
   alias BlogTest.Category
@@ -74,7 +75,7 @@ defmodule BlogTest.PostController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => id} = _params) do
     post = Repo.get!(Post, id)
 
     # Here we use delete! (with a bang) because we expect
@@ -84,5 +85,23 @@ defmodule BlogTest.PostController do
     conn
     |> put_flash(:info, "Post deleted successfully.")
     |> redirect(to: post_path(conn, :index))
+  end
+
+  @doc """
+   Check the user ownership
+   %{assigns: assigns} = conn
+   %{params: params} = conn
+
+  """
+  defp check_post_owner( %{params: %{"id" => post_id},assigns: %{user: user}} = conn,_params) do
+    if Repo.get(Post,post_id).user_id == user.id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You cannot edit or delete that post")
+      |> redirect(to: post_path(conn, :index))
+      |> halt()
+    end
+
   end
 end

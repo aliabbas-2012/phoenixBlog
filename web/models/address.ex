@@ -25,6 +25,7 @@ defmodule BlogTest.Address do
     |> validate_required([:street, :address_type])
   end
 
+  
   defp set_delete_action(changeset) do
     if get_change(changeset, :delete) do
       %{changeset | action: :delete}
