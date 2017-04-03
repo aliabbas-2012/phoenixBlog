@@ -45,7 +45,7 @@
     <div class="panel panel-primary addresses">
           <div class="panel-heading">Addresses</div>
           <%= inputs_for f, :addresses, fn p -> %>
-            <%= BlogTest.HasManyView.render_addresses(p)   %>
+            <%= BlogTest.HasManyView.render_addresses(p,false)   %>
           <% end %>
     </div>
     <div class="col-lg-12">

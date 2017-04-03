@@ -1,3 +1,3 @@
 <%= inputs_for @f, :addresses, fn p -> %>
-  <%= BlogTest.HasManyView.render_addresses(p)   %>
+  <%= BlogTest.HasManyView.render_addresses(p,true)   %>
 <% end %>

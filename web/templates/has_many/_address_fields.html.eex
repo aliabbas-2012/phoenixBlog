@@ -1,7 +1,7 @@
 <div class="panel-body">
     <div class="form-group">
       <%= label @f, :address_type, class: "control-label" %>
-      <%= text_input @f, :address_type, class: "form-control" %>
+      <%= select @f, :address_type,["Home": "Home", "Office": "Office"],class: 'form-control',prompt: "Choose Type" %>
       <%= error_tag @f, :address_type %>
     </div>
     <div class="form-group">
@@ -19,8 +19,12 @@
       <%= text_input @f, :city, class: "form-control" %>
       <%= error_tag @f, :city %>
     </div>
-    <div class="form-group">
-      <%= label @f, :delete, "Delete?", class: "control-label" %>
-      <%= checkbox @f, :delete %>
-    </div>
+    <%= if @is_template do %>
+      <%= link "Remove",to: "javascript:void(0);",class: "btn btn-danger remove_address" %>
+    <% else %>
+      <div class="form-group">
+        <%= label @f, :delete, "Delete?", class: "control-label" %>
+        <%= checkbox @f, :delete %>
+      </div>
+    <% end %>
 </div>

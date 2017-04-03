@@ -5,8 +5,8 @@ defmodule BlogTest.HasManyView do
   alias BlogTest.Address
   alias BlogTest.User
 
-  def render_addresses(p) do
-    render "_address_fields.html", f: p
+  def render_addresses(p,is_template) do
+    render "_address_fields.html", f: p,is_template: is_template
   end
 
   def link_to_address_fields do

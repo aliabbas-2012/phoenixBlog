@@ -47,4 +47,11 @@ $(document).ready(function() {
     $("div.panel.panel-primary.addresses").append(uniq_template);
 
   })
+  //Remove address
+  $(document).on("click",".remove_address",function(e) {
+      e.preventDefault();
+      $(this).closest("div.panel-body").remove();
+  })
+
+
 });

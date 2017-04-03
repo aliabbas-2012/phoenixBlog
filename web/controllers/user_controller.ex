@@ -19,7 +19,10 @@ defmodule BlogTest.UserController do
   end
 
   def new(conn, _params) do
-    changeset = User.changeset(%User{addresses: [%Address{}]}, %{})
+    changeset = User.changeset(%User{addresses: [
+      %Address{address_type: "Home"},
+      %Address{address_type: "Office"}
+    ]}, %{})
 
 
     render(conn, "new.html", changeset: changeset)
@@ -47,14 +50,14 @@ defmodule BlogTest.UserController do
   end
 
   def edit(conn, %{"id" => id}) do
-    user = Repo.get!(User, id)
+    user = Repo.get!(User, id) |> Repo.preload(:addresses)
     changeset = User.changeset(user)
 
     render(conn, "edit.html", user: user, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Repo.get!(User, id)
+    user = Repo.get!(User, id)  |> Repo.preload(:addresses)
     changeset = User.changeset(user, user_params)
 
     case Repo.update(changeset) do

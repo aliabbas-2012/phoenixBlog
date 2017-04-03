@@ -26,6 +26,7 @@ defmodule BlogTest.User do
   def changeset(struct, params \\ %{}) do
       struct
       |>cast(params,[:user_name,:email,:password,:first_name,:last_name,:gender,:provider,:token])
+      |> cast_assoc(:addresses, required: true)
       |>validate_required([:user_name,:email,:first_name,:last_name])
       |>unique_constraint(:email)
       |>unique_constraint(:user_name)
