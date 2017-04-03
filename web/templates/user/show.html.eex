@@ -5,9 +5,10 @@
   <ol class="breadcrumb">
 
     <li><a href="<%= page_path(@conn,:index) %>"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="<%= user_path(@conn,:index) %>"><i class="fa fa-user"></i> List User</a></li>
     <li><a href="<%= user_path(@conn,:new) %>"><i class="fa fa-user"></i> Create User</a></li>
     <li><a href="<%= user_path(@conn,:edit,@user) %>"><i class="fa fa-user"></i> Edit User</a></li>
-    <li><a href="<%= user_path(@conn,:index) %>"><i class="fa fa-user"></i> List User</a></li>
+
     <li class="active">Show</li>
   </ol>
 </section>
@@ -48,34 +49,35 @@
         </tbody>
 
       </table>
-
-      <div class="panel panel-primary addresses">
-            <div class="panel-heading">Addresses</div>
-            <%= for address <- @user.addresses do %>
-              <div class="panel-body">
-                <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                      <th>Address Type</th>
-                      <td><%= address.address_type %></td>
-                    </tr>
-                    <tr>
-                      <th>Street</th>
-                      <td><%= address.street %></td>
-                    </tr>
-                    <tr>
-                      <th>Post code</th>
-                      <td><%= address.post_code %></td>
-                    </tr>
-                    <tr>
-                      <th>City</th>
-                      <td><%= address.city %></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            <% end %>
-      </div>
+      <%= if :erlang.length(@user.addresses)>0 do  %>
+        <div class="panel panel-primary addresses">
+              <div class="panel-heading">Addresses</div>
+              <%= for address <- @user.addresses do %>
+                  <div class="panel-body">
+                    <table class="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <th>Address Type</th>
+                          <td><%= address.address_type %></td>
+                        </tr>
+                        <tr>
+                          <th>Street</th>
+                          <td><%= address.street %></td>
+                        </tr>
+                        <tr>
+                          <th>Post code</th>
+                          <td><%= address.post_code %></td>
+                        </tr>
+                        <tr>
+                          <th>City</th>
+                          <td><%= address.city %></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+              <% end %>
+        </div>
+      <% end %>
     </div>
     <!-- /.box-footer-->
   </div>
