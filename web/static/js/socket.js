@@ -3,7 +3,10 @@
 
 // To use Phoenix channels, the first step is to import Socket
 // and connect at the socket path in "lib/my_app/endpoint.ex":
+
+
 import {Socket} from "phoenix"
+
 
 let socket = new Socket("/socket", {params: {token: window.userToken}})
 
@@ -77,5 +80,7 @@ chatInput.on("keypress", event => {
 
 
 channel.on("new_message", payload => {
-  messagesContainer.append(`<br/>[${Date()}] ${payload.body}`)
+
+  let today = moment().format('MM/DD/YYYY hh:mm:ss');
+  messagesContainer.append(`<br/>[${today}] ${payload.body}`)
 })
