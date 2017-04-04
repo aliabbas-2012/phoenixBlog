@@ -13,12 +13,8 @@
 // to also remove its path from "config.paths.watched".
 import "phoenix_html"
 
-// Import local files
-//
-// Local files can be imported directly using relative
-// paths "./socket" or full ones "web/static/js/socket".
 
-// import socket from "./socket"
+//other code
 
 var elements = document.querySelectorAll('[data-submit^=parent]')
 var len = elements.length
@@ -55,3 +51,10 @@ $(document).ready(function() {
 
 
 });
+
+// Import local files
+//
+// Local files can be imported directly using relative
+// paths "./socket" or full ones "web/static/js/socket".
+
+import socket from "./socket"

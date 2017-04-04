@@ -41,6 +41,16 @@
     <!-- Header Navbar: style can be found in header.less -->
     <%= if @conn.assigns[:user] do %>
         <%= render BlogTest.SharedView, "_nav_bar.html",conn: @conn %>
+    <%else %>
+     <nav class="navbar navbar-static-top">
+       <div class="navbar-custom-menu">
+          <ul class="nav pull-right">
+            <li class="dropdown" id="menuLogin">
+              <a class="dropdown-toggle" href="<%= auth_path(@conn,:new) %>">Login</a>
+            </li>
+          </ul>
+      </div>
+      </nav
     <% end %>
     <!-- end of nav -->
 
@@ -325,7 +335,7 @@
   <script src="<%= static_path(@conn, "/js/plugins/jQuery/jquery-2.2.3.min.js") %>"></script>
 
   <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-  
+
   <!-- Bootstrap 3.3.6 -->
   <script src="<%= static_path(@conn, "/js/bootstrap/bootstrap.min.js") %>"></script>
   <!-- SlimScroll -->

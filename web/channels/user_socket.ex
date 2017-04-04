@@ -1,8 +1,8 @@
 defmodule BlogTest.UserSocket do
   use Phoenix.Socket
 
-  ## Channels
-  # channel "room:*", BlogTest.RoomChannel
+  ## Channels (example)
+  channel "rooms:*", BlogTest.RoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

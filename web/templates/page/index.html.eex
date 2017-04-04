@@ -35,6 +35,10 @@
     </div>
     <!-- /.box-footer-->
   </div>
+  <div class="box">
+    <div id="messages"></div>
+    <input id="chat-input" type="text" class="form-control"></input>
+  </div>
   <!-- /.box -->
 
 </section>

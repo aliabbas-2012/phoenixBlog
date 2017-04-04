@@ -105,7 +105,7 @@
 
             <p>
               <%= user_full_name(@conn.assigns[:user]) %>
-              <small>Member since -</small>
+              <small>Member since -<%= Timex.format!(@conn.assigns[:user].inserted_at, " %m/%d/%Y", :strftime) %></small>
             </p>
           </li>
 
