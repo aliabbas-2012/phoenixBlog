@@ -11,8 +11,14 @@ defmodule BlogTest.RoomChannel do
   end
 
   def handle_in("new_message", body, socket) do
-   IO.puts "-----in message-------"  
+   IO.puts "-----in message-------"
    broadcast! socket, "new_message", body
+   {:noreply, socket}
+ end
+
+ def handle_out("new_message", payload, socket) do
+    IO.puts "-----out message-------"
+   push socket, "new_message", payload
    {:noreply, socket}
  end
 end
