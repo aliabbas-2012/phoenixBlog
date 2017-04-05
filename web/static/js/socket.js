@@ -7,8 +7,14 @@
 
 import {Socket} from "phoenix"
 
+// let first defined name of person who wants to chat
+let calling_name = localStorage.getItem("call_name");
+if (!calling_name){
+  calling_name = prompt("What is name you are going to use for chat ?")
+  localStorage.setItem("call_name",calling_name)
+}
 
-let socket = new Socket("/socket", {params: {token: window.userToken}})
+let socket = new Socket("/socket", {params: {token: window.userToken,calling_name: calling_name}})
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -57,30 +63,40 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
 // Now that you are connected, you can join channels with a rooms:
-
+//I defined harded coded room lobby
 let channel = socket.channel("rooms:lobby", {})
 console.log(channel)
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
-export default socket
+
 
 
 // UI Stuff
 let chatInput = $("#chat-input");
-let messagesContainer = $("#messages");
+let messagesContainer = $("#chat-box");
+let button_enter = $("#broad_cast_chat")
 
 chatInput.on("keypress", event => {
+
   if(event.keyCode === 13){
-    channel.push("new_message", {body:chatInput.val()});
+    channel.push("room_msg", {body:chatInput.val()});
     chatInput.val("");
   }
 });
 
+button_enter.on("click", event => {
+    channel.push("room_msg", {body:chatInput.val()});
+    chatInput.val("");
+});
 
-channel.on("new_message", payload => {
+
+channel.on("room_msg", payload => {
 
   let today = moment().format('MM/DD/YYYY hh:mm:ss');
   messagesContainer.append(`<br/>[${today}] ${payload.body}`)
 })
+
+
+export default socket

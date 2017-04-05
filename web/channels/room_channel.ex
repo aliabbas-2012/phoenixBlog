@@ -10,15 +10,15 @@ defmodule BlogTest.RoomChannel do
     {:error, %{reason: "you can only join the lobby"}}
   end
 
-  def handle_in("new_message", body, socket) do
+  def handle_in("room_msg", body, socket) do
    IO.puts "-----in message-------"
-   broadcast! socket, "new_message", body
+   broadcast! socket, "room_msg", body
    {:noreply, socket}
  end
 
- def handle_out("new_message", payload, socket) do
+ def handle_out("room_msg", payload, socket) do
     IO.puts "-----out message-------"
-   push socket, "new_message", payload
+   push socket, "room_msg", payload
    {:noreply, socket}
  end
 end

@@ -57,5 +57,5 @@ $(document).ready(function() {
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-
+//only the case when user is login
 import socket from "./socket"

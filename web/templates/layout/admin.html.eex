@@ -103,6 +103,11 @@
             <li><a href="<%= post_path(@conn,:index) %>"><i class="fa fa-circle-o"></i> Post</a></li>
           </ul>
         </li>
+        <li >
+          <a href="<%= room_path(@conn,:show,:lobby) %>">
+            <i class="fa fa-chat"></i> <span>Chat Room</span>
+          </a>
+        </li>
 
 
       </ul>
@@ -330,6 +335,7 @@
 </div>
 <!-- ./wrapper -->
 
+  <script>window.userId = "<%= assigns[:user].id %>";</script>
 
   <!-- jQuery 2.2.3 -->
   <script src="<%= static_path(@conn, "/js/plugins/jQuery/jquery-2.2.3.min.js") %>"></script>

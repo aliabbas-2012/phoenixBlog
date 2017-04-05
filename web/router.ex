@@ -23,6 +23,7 @@ defmodule BlogTest.Router do
     resources "/users", UserController
     resources "/categories", CategoryController
     resources "/posts", PostController
+    resources "/rooms", RoomController
 
 
   end
