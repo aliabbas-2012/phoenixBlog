@@ -71,31 +71,45 @@ channel.join()
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 
-
-
-// UI Stuff
 let chatInput = $("#chat-input");
+let button_enter = $("#broad_cast_chat");
 let messagesContainer = $("#chat-box");
-let button_enter = $("#broad_cast_chat")
+function push_messages(channel,chatInput){
+  // UI Stuff
+  channel.push("room_msg", {body:chatInput.val()});
+  chatInput.val("");
+}
+
 
 chatInput.on("keypress", event => {
 
   if(event.keyCode === 13){
-    channel.push("room_msg", {body:chatInput.val()});
-    chatInput.val("");
+    push_messages(channel,chatInput);
   }
 });
 
 button_enter.on("click", event => {
-    channel.push("room_msg", {body:chatInput.val()});
-    chatInput.val("");
+  push_messages(channel,chatInput);
 });
 
 
-channel.on("room_msg", payload => {
+channel.on("room_msg", message => {
+  console.log(message);
+  // let today = moment().format('MM/DD/YYYY hh:mm:ss');
+  let msg_time = moment().format('hh:mm');
+  let msg_html = `<div class="item">
+            <img src="/images/admin_lte/user3-128x128.jpg" class="offline" alt="User Image">
 
-  let today = moment().format('MM/DD/YYYY hh:mm:ss');
-  messagesContainer.append(`<br/>[${today}] ${payload.body}`)
+            <p class="message">
+              <a href="javascript:void(0);" class="name">
+                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> ${msg_time}</small>
+                ${message.calling_name}
+              </a>
+              ${message.body}
+            </p>
+        </div>`
+  // messagesContainer.append(`<br/>[${today}] ${message.body}`)
+  messagesContainer.append(msg_html);
 })
 
 

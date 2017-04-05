@@ -10,9 +10,12 @@ defmodule BlogTest.RoomChannel do
     {:error, %{reason: "you can only join the lobby"}}
   end
 
-  def handle_in("room_msg", body, socket) do
-   IO.puts "-----in message-------"
-   broadcast! socket, "room_msg", body
+  def handle_in("room_msg", %{"body"=>body} = payload, socket) do
+   IO.puts "-----in message braoding casting-------"
+   IO.inspect body
+   IO.inspect socket
+
+   broadcast! socket, "room_msg", %{body: body,calling_name: socket.assigns.calling_name}
    {:noreply, socket}
  end
 

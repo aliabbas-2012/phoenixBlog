@@ -19,11 +19,11 @@ defmodule BlogTest.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(params, socket) do
-    IO.puts "------------"
-    IO.inspect params
+  def connect(%{"calling_name"=>calling_name} = params, socket) do
+    IO.puts "----connection--------"
+    IO.inspect calling_name
     IO.inspect socket
-    {:ok, socket}
+    {:ok, assign(socket, :calling_name, calling_name)}
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
