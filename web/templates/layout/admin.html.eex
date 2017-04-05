@@ -114,7 +114,7 @@
             <%= for room <- BlogTest.Repo.all(BlogTest.Room) do %>
               <li>
                 <a href="<%= room_path(@conn,:show,room) %>">
-                  <i class="fa fa-chat"></i> <span>Lobby</span>
+                  <i class="fa fa-chat"></i> <span><%= room.name %></span>
                 </a>
               </li>
             <% end %>

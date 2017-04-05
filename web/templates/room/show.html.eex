@@ -84,3 +84,9 @@
     <!-- /.box (chat box) -->
   </section>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    window.createSocket('<%= @room.id %>')
+  });
+</script>

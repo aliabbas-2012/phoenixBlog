@@ -1,8 +1,11 @@
 defmodule BlogTest.RoomChannel do
   use Phoenix.Channel
+  alias BlogTest.Room
+  alias BlogTest.Repo
 
-  def join("rooms:lobby", _message, socket) do
-      IO.puts "------in lobby------"
+  def join("rooms:"<> roomId, _message, socket) do
+      room = Repo.get!(Room,roomId)
+      IO.puts "------in #{room.name}------"
     {:ok, socket}
   end
   def join(_room, _params, _socket) do

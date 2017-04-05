@@ -64,53 +64,58 @@ socket.connect()
 
 // Now that you are connected, you can join channels with a rooms:
 //I defined harded coded room lobby
-let channel = socket.channel("rooms:lobby", {})
-console.log(channel)
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+
+//only room specific chat
+const createSocket = (roomId) => {
+  let channel = socket.channel(`rooms:${roomId}`, {})
+  console.log(channel)
+  channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
 
 
-let chatInput = $("#chat-input");
-let button_enter = $("#broad_cast_chat");
-let messagesContainer = $("#chat-box");
-function push_messages(channel,chatInput){
-  // UI Stuff
-  channel.push("room_msg", {body:chatInput.val()});
-  chatInput.val("");
+  let chatInput = $("#chat-input");
+  let button_enter = $("#broad_cast_chat");
+  let messagesContainer = $("#chat-box");
+  function push_messages(channel,chatInput){
+    // UI Stuff
+    channel.push("room_msg", {body:chatInput.val()});
+    chatInput.val("");
+  }
+
+
+  chatInput.on("keypress", event => {
+
+    if(event.keyCode === 13){
+      push_messages(channel,chatInput);
+    }
+  });
+
+  button_enter.on("click", event => {
+    push_messages(channel,chatInput);
+  });
+
+
+  channel.on("room_msg", message => {
+    console.log(message);
+    // let today = moment().format('MM/DD/YYYY hh:mm:ss');
+    let msg_time = moment().format('hh:mm');
+    let msg_html = `<div class="item">
+              <img src="/images/admin_lte/user3-128x128.jpg" class="offline" alt="User Image">
+
+              <p class="message">
+                <a href="javascript:void(0);" class="name">
+                  <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> ${msg_time}</small>
+                  ${message.calling_name}
+                </a>
+                ${message.body}
+              </p>
+          </div>`
+    // messagesContainer.append(`<br/>[${today}] ${message.body}`)
+    messagesContainer.append(msg_html);
+  })
 }
 
-
-chatInput.on("keypress", event => {
-
-  if(event.keyCode === 13){
-    push_messages(channel,chatInput);
-  }
-});
-
-button_enter.on("click", event => {
-  push_messages(channel,chatInput);
-});
-
-
-channel.on("room_msg", message => {
-  console.log(message);
-  // let today = moment().format('MM/DD/YYYY hh:mm:ss');
-  let msg_time = moment().format('hh:mm');
-  let msg_html = `<div class="item">
-            <img src="/images/admin_lte/user3-128x128.jpg" class="offline" alt="User Image">
-
-            <p class="message">
-              <a href="javascript:void(0);" class="name">
-                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> ${msg_time}</small>
-                ${message.calling_name}
-              </a>
-              ${message.body}
-            </p>
-        </div>`
-  // messagesContainer.append(`<br/>[${today}] ${message.body}`)
-  messagesContainer.append(msg_html);
-})
-
+window.createSocket = createSocket;
 
 export default socket
