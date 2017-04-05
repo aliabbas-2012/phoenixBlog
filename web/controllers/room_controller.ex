@@ -3,9 +3,12 @@ defmodule BlogTest.RoomController do
   plug :put_layout, "admin.html"
   plug BlogTest.Plugs.CheckAuth
 
-  def show(conn,%{"id"=>id}) do
+  alias BlogTest.Room
+  alias BlogTest.Repo
 
-    render(conn, "show.html", id: id)
+  def show(conn,%{"id"=>id}) do
+    room = Repo.get!(Room,id)
+    render(conn, "show.html", room: room)
   end
 
 end

@@ -11,7 +11,7 @@
       <div class="box-header">
         <i class="fa fa-comments-o"></i>
 
-        <h3 class="box-title">Room <%= @id %></h3>
+        <h3 class="box-title">Room <%= @room.name %></h3>
 
         <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
           <div class="btn-group" data-toggle="btn-toggle">

@@ -103,10 +103,22 @@
             <li><a href="<%= post_path(@conn,:index) %>"><i class="fa fa-circle-o"></i> Post</a></li>
           </ul>
         </li>
-        <li >
-          <a href="<%= room_path(@conn,:show,:lobby) %>">
-            <i class="fa fa-chat"></i> <span>Chat Room</span>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-users"></i> <span>Chat Rooms</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
           </a>
+          <ul class="treeview-menu">
+            <%= for room <- BlogTest.Repo.all(BlogTest.Room) do %>
+              <li>
+                <a href="<%= room_path(@conn,:show,room) %>">
+                  <i class="fa fa-chat"></i> <span>Lobby</span>
+                </a>
+              </li>
+            <% end %>
+          </ul>
         </li>
 
 
