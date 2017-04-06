@@ -14,18 +14,19 @@ defmodule BlogTest.User do
     field :first_name, :string
     field :last_name, :string
     field :gender, :string
-    field :provider, :string
-    field :token, :string
+    field :provider, :string, virtual: true
+    field :token, :string, virtual: true
     field :full_name, :string, virtual: true
     has_many(:posts, Post)
     has_many(:addresses, Address)
+    has_many(:authorizeTokens, AuthorizeToken)
 
     timestamps()
   end
 
   def changeset(struct, params \\ %{}) do
       struct
-      |>cast(params,[:user_name,:email,:password,:first_name,:last_name,:gender,:provider,:token])
+      |>cast(params,[:user_name,:email,:password,:first_name,:last_name,:gender])
       |> cast_assoc(:addresses, required: true)
       |>validate_required([:user_name,:email,:first_name,:last_name])
       |>unique_constraint(:email)

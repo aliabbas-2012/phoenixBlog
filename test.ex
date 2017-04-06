@@ -51,3 +51,13 @@ from(p in Category, where: p.id in  ^categories) |> Repo.all
 from(p in Category, where: p.id in  ^Enum.map([],fn(x)-> String.to_integer(x) end)) |> Repo.all
 
 from(p in Category, where: p.id in [1] ) |> Repo.all
+
+
+#How to find User by attribute name
+Repo.get_by(User, email:  String.downcase("itsgeniusstar@gmail.com"))
+
+#Auth Token
+
+alias BlogTest.AuthorizeToken
+Repo.get_by(AuthorizeToken, user_id:  1)
+Repo.get_by(AuthorizeToken, user_id:  1, token: "2xw60hqAzLF7xiAVj8UUj_vw-cviete41491480714390")

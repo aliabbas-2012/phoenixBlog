@@ -87,6 +87,6 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    window.createSocket('<%= @room.id %>')
+    window.createSocket('<%= @room.id %>','<%= @conn.assigns[:auth_token] %>')
   });
 </script>

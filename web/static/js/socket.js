@@ -14,7 +14,8 @@ if (!calling_name){
   localStorage.setItem("call_name",calling_name)
 }
 
-let socket = new Socket("/socket", {params: {token: window.userToken,calling_name: calling_name}})
+const token = $('meta[name="auth_token"]').attr('content');
+let socket = new Socket("/socket", {params: {token: token,calling_name: calling_name}})
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -66,8 +67,9 @@ socket.connect()
 //I defined harded coded room lobby
 
 //only room specific chat
-const createSocket = (roomId) => {
-  let channel = socket.channel(`rooms:${roomId}`, {})
+
+const createSocket = (roomId,authToken) => {
+  let channel = socket.channel(`rooms:${roomId}`, {auth_token: authToken})
   console.log(channel)
   channel.join()
     .receive("ok", resp => { console.log("Joined successfully", resp) })

@@ -4,6 +4,11 @@ defmodule BlogTest.AuthController do
   plug :put_layout, "login.html"
   alias BlogTest.Repo
   alias BlogTest.User
+  alias BlogTest.SecureRandom
+  alias BlogTest.AuthorizeToken
+
+  use Timex
+  require IEx
 
 
   def new(conn,_params) do
@@ -43,13 +48,23 @@ defmodule BlogTest.AuthController do
   def callback( conn, params) do
 
   end
+  #storing auth token
+  defp store_token(conn,user) do
+    auth_token = SecureRandom.random_token
+    token_params = %{user_id: user.id,token: auth_token,provider: "self",expiry_date: Timex.shift(Timex.now, days: 3)}
+    AuthorizeToken.changeset(%AuthorizeToken{}, token_params) |> Repo.insert!
+    auth_token
+  end
+
 
   defp signin(conn, user) do
     conn
     |> put_flash(:info, "Welcome to  #{user.first_name} !")
     |> put_session(:user_id, user.id)
+    |> put_session(:auth_token, store_token(conn,user))
     |> redirect(to: page_path(conn, :index))
   end
+
 
   defp find_user_by_email(session_params) do
     case Repo.get_by(User, email:  String.downcase(session_params["email"])) do

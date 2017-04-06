@@ -6,6 +6,10 @@
   <title>BlogTest | Blank Page</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!--  auth token -->
+  <%= if @conn.assigns[:auth_token] do %>
+  <meta name="auth_token" content="<%= @conn.assigns[:auth_token] %>" />
+  <% end %>
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="<%= static_path(@conn, "/css/bootstrap/bootstrap.min.css") %>">
@@ -347,7 +351,7 @@
 </div>
 <!-- ./wrapper -->
 
-  <script>window.userId = "<%= assigns[:user].id %>";</script>
+  <script>window.userId = "<%= assigns[:user] && assigns[:user].id || nil %>";</script>
 
   <!-- jQuery 2.2.3 -->
   <script src="<%= static_path(@conn, "/js/plugins/jQuery/jquery-2.2.3.min.js") %>"></script>
