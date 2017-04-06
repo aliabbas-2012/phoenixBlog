@@ -3,6 +3,7 @@ defmodule BlogTest.User do
 
   alias BlogTest.Post
   alias BlogTest.Address
+  # alias BlogTest.AuthorizeToken
   alias BlogTest.ApplicationHelpers
 
   # after_load :calc
@@ -19,7 +20,7 @@ defmodule BlogTest.User do
     field :full_name, :string, virtual: true
     has_many(:posts, Post)
     has_many(:addresses, Address)
-    has_many(:authorizeTokens, AuthorizeToken)
+    has_many(:authorize_tokens, AuthorizeToken)
 
     timestamps()
   end
@@ -28,6 +29,7 @@ defmodule BlogTest.User do
       struct
       |>cast(params,[:user_name,:email,:password,:first_name,:last_name,:gender])
       |> cast_assoc(:addresses, required: true)
+      # |> cast_assoc(:authorize_tokens, required: false)
       |>validate_required([:user_name,:email,:first_name,:last_name])
       |>unique_constraint(:email)
       |>unique_constraint(:user_name)

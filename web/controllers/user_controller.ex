@@ -6,6 +6,7 @@ defmodule BlogTest.UserController do
 
   alias BlogTest.User
   alias BlogTest.Address
+  alias BlogTest.AuthorizeToken
   alias BlogTest.Email
   alias BlogTest.Mailer
 
