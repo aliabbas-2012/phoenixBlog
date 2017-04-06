@@ -19,6 +19,7 @@ defmodule BlogTest.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/auth-token-verification", PageController, :verify_token
 
     resources "/users", UserController
     resources "/categories", CategoryController

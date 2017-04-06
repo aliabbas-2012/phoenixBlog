@@ -1,5 +1,7 @@
 defmodule BlogTest.UserSocket do
   use Phoenix.Socket
+  alias BlogTest.Repo
+  alias BlogTest.AuthorizeToken
 
   ## Channels (example)
   channel "rooms:*", BlogTest.RoomChannel
@@ -19,11 +21,18 @@ defmodule BlogTest.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(%{"calling_name"=>calling_name} = params, socket) do
+  def connect(%{"auth_token"=>auth_token} = params, socket) do
     IO.puts "----connection--------"
-    IO.inspect calling_name
-    IO.inspect socket
-    {:ok, assign(socket, :calling_name, calling_name)}
+
+    #verifying token is correct and assigning to socket
+    case Repo.get_by(AuthorizeToken, token:  auth_token)  do
+      nil ->
+         :error
+      auth ->
+        IO.puts "ali here"
+        {:ok, assign(socket, :auth, auth)}
+    end
+
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
@@ -37,4 +46,5 @@ defmodule BlogTest.UserSocket do
   #
   # Returning `nil` makes this socket anonymous.
   def id(_socket), do: nil
+
 end

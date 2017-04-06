@@ -7,15 +7,11 @@
 
 import {Socket} from "phoenix"
 
-// let first defined name of person who wants to chat
-let calling_name = localStorage.getItem("call_name");
-if (!calling_name){
-  calling_name = prompt("What is name you are going to use for chat ?")
-  localStorage.setItem("call_name",calling_name)
-}
+// let first defined which is user is online
 
-const token = $('meta[name="auth_token"]').attr('content');
-let socket = new Socket("/socket", {params: {token: token,calling_name: calling_name}})
+const auth_token = $('meta[name="auth_token"]').attr('content');
+console.log(auth_token);
+let socket = new Socket("/socket", {params: {auth_token: auth_token}})
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -70,7 +66,10 @@ socket.connect()
 
 const createSocket = (roomId,authToken) => {
   let channel = socket.channel(`rooms:${roomId}`, {auth_token: authToken})
-  console.log(channel)
+  console.log(channel);
+  //error call back
+  channel.onError(e =>    window.location.href = "/auth-token-verification/");
+
   channel.join()
     .receive("ok", resp => { console.log("Joined successfully", resp) })
     .receive("error", resp => { console.log("Unable to join", resp) })

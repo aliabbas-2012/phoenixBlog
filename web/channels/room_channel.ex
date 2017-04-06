@@ -18,7 +18,7 @@ defmodule BlogTest.RoomChannel do
    IO.inspect body
    IO.inspect socket
 
-   broadcast! socket, "room_msg", %{body: body,calling_name: socket.assigns.calling_name}
+   broadcast! socket, "room_msg", %{body: body,calling_name: socket.assigns.auth.user_id}
    {:noreply, socket}
  end
 

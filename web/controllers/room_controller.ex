@@ -5,10 +5,15 @@ defmodule BlogTest.RoomController do
 
   alias BlogTest.Room
   alias BlogTest.Repo
+  alias BlogTest.AuthorizeToken
 
   def show(conn,%{"id"=>id}) do
-    room = Repo.get!(Room,id)
-    render(conn, "show.html", room: room)
+    if !Repo.get_by(AuthorizeToken, token:  conn.assigns[:auth_token]) do
+      conn
+      |> put_flash(:error, "You have invalid token.")
+      |> redirect(to: page_path(conn, :index))
+    end
+    render(conn, "show.html", room: Repo.get!(Room,id))
   end
 
 end
