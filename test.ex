@@ -1,6 +1,7 @@
 # Create the POst. Note that the (empty) `organizations` field has to be preloaded.
 alias BlogTest.Post
 alias BlogTest.Category
+alias BlogTest.Image
 alias BlogTest.Repo
 import Ecto.Query
 

@@ -3,12 +3,13 @@ defmodule BlogTest.Router do
 
 
   pipeline :browser do
-    plug :accepts, ["html"]
+    plug :accepts, ["html","jpg"]
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug BlogTest.Plugs.SetUser
+    # plug BlogTest.SetStatic
   end
 
   pipeline :api do
