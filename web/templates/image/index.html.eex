@@ -1,0 +1,6 @@
+<h4><%= link "Upload new image", to: image_path(@conn, :new) %></h4>
+
+
+<%= for image <- @images do %>
+  <img src="<%= BlogTest.Avatar.url({image.image, image})%>"><br>
+<% end %>

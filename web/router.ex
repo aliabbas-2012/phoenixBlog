@@ -25,6 +25,7 @@ defmodule BlogTest.Router do
     resources "/categories", CategoryController
     resources "/posts", PostController
     resources "/rooms", RoomController
+    resources "/images", ImageController
 
 
   end

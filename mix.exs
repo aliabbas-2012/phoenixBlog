@@ -19,7 +19,9 @@ defmodule BlogTest.Mixfile do
   def application do
     [mod: {BlogTest, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex,:bamboo,:ueberauth,:ueberauth_facebook,:timex]]
+                    :phoenix_ecto, :postgrex,:bamboo,:ueberauth,:ueberauth_facebook,:timex,:arc_ecto,
+                    # :ex_aws,:hackney
+                    ]]
   end
 
   # Specifies which paths to compile per environment.
@@ -42,7 +44,15 @@ defmodule BlogTest.Mixfile do
      {:bamboo_smtp, "~> 1.2.1"},
      {:ueberauth, "~> 0.4"},
      {:ueberauth_facebook, "~> 0.6"},
-     {:timex, "~> 3.0"}
+     {:timex, "~> 3.0"},
+     { :uuid, "~> 1.1" },
+     {:arc, "0.7.0"},
+     {:arc_ecto, "~> 0.6.0"},
+     # If using Amazon S3:
+    #  {:ex_aws, "~> 1.1"},
+    #  {:hackney, "~> 1.6"},
+    # #  {:poison, "~> 3.1"},
+    #  {:sweet_xml, "~> 0.6"}
    ]
   end
 
