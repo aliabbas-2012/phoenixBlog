@@ -21,18 +21,14 @@ defmodule BlogTest.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(%{"auth_token"=>auth_token} = params, socket) do
-    IO.puts "----connection--------"
-
-    #verifying token is correct and assigning to socket
-    case Repo.get_by(AuthorizeToken, token:  auth_token)  do
-      nil ->
-         :error
-      auth ->
-        IO.puts "ali here"
-        {:ok, assign(socket, :auth, auth)}
-    end
-
+  def connect(%{"token"=>auth_token} = params, socket) do
+    IO.puts auth_token
+   case Phoenix.Token.verify(BlogTest.Endpoint, "user", auth_token, max_age: 1209600) do
+     {:ok, _user_id} ->
+       verify_token_from_database(socket,auth_token)
+     {:error, _reason} ->
+       :error
+   end
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
@@ -47,4 +43,12 @@ defmodule BlogTest.UserSocket do
   # Returning `nil` makes this socket anonymous.
   def id(_socket), do: nil
 
+  defp verify_token_from_database(socket,auth_token) do
+    case Repo.get_by(AuthorizeToken, token:  auth_token)  do
+      nil ->
+         :error
+      auth ->
+        {:ok, assign(socket, :auth, auth)}
+    end
+  end
 end

@@ -11,7 +11,7 @@ import {Socket} from "phoenix"
 
 const auth_token = $('meta[name="auth_token"]').attr('content');
 console.log(auth_token);
-let socket = new Socket("/socket", {params: {auth_token: auth_token}})
+let socket = new Socket("/socket", {params: {token: auth_token}})
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -68,7 +68,7 @@ const createSocket = (roomId,authToken) => {
   let channel = socket.channel(`rooms:${roomId}`, {auth_token: authToken})
   console.log(channel);
   //error call back
-  channel.onError(e =>    window.location.href = "/auth-token-verification/");
+  //channel.onError(e =>    window.location.href = "/auth-token-verification/");
 
   channel.join()
     .receive("ok", resp => { console.log("Joined successfully", resp) })
@@ -98,22 +98,29 @@ const createSocket = (roomId,authToken) => {
 
 
   channel.on("room_msg", message => {
-    console.log(message);
-    // let today = moment().format('MM/DD/YYYY hh:mm:ss');
+
+    let user_image = "user3-128x128.jpg";
+    if(message.sender_id%2==0) {
+        user_image = "user2-160x160.jpg";
+    }
     let msg_time = moment().format('hh:mm');
     let msg_html = `<div class="item">
-              <img src="/images/admin_lte/user3-128x128.jpg" class="offline" alt="User Image">
+              <img src="/images/admin_lte/${user_image}" class="online" alt="User Image">
 
               <p class="message">
                 <a href="javascript:void(0);" class="name">
                   <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> ${msg_time}</small>
-                  ${message.calling_name}
+                  ${message.sender}
                 </a>
                 ${message.body}
               </p>
           </div>`
     // messagesContainer.append(`<br/>[${today}] ${message.body}`)
     messagesContainer.append(msg_html);
+    //scroll to bottom
+    $("body, html").animate({
+        scrollTop: $(document).height()
+    }, 400);
   })
 }
 

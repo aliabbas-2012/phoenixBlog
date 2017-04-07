@@ -1,10 +1,14 @@
 defmodule BlogTest.Room do
   use BlogTest.Web, :model
 
+  alias BlogTest.User
+  alias BlogTest.Message
+
   schema "rooms" do
     field :name, :string
     field :room_type, :string
     belongs_to(:user,User)
+    has_many(:messages, Message)
     timestamps()
   end
 

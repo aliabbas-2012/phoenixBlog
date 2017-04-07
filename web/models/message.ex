@@ -1,6 +1,9 @@
 defmodule BlogTest.Message do
   use BlogTest.Web, :model
 
+  alias BlogTest.User
+  alias BlogTest.Room
+
   schema "messages" do
     field :content, :string
     belongs_to(:user,User)

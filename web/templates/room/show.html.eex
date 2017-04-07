@@ -23,52 +23,26 @@
       </div>
       <div class="box-body chat" id="chat-box">
         <!-- chat item -->
-        <div class="item">
-          <img src="<%= static_path(@conn, "/images/admin_lte/user2-160x160.jpg") %>" class="online" alt="User Image">
-
-          <p class="message">
-            <a href="#" class="name">
-              <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-              Mike Doe
-            </a>
-            I would like to meet you to discuss the latest news about
-            the arrival of the new theme. They say it is going to be one the
-            best themes on the market
-          </p>
-
-          <!-- /.attachment -->
-        </div>
+        <%= for message <- @room.messages do %>
+          <div class="item">
+            <!-- temprory solution for two users images -->
+            <%= if rem(message.user_id, 2) ==0  do %>
+              <img src="<%= static_path(@conn, "/images/admin_lte/user2-160x160.jpg") %>" class="online" alt="User Image">
+            <% else %>
+                <img src="<%= static_path(@conn, "/images/admin_lte/user3-128x128.jpg") %>" class="offline" alt="User Image">
+            <% end %>
+            <p class="message">
+              <a href="#" class="name">
+                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> <%= message_time(message.inserted_at) %></small>
+                <%= user_full_name(message.user) %>
+              </a>
+              <%= message.content %>
+            </p>
+            <!-- /.attachment -->
+          </div>
+      <% end %>
         <!-- /.item -->
-        <!-- chat item -->
-        <div class="item">
-          <img src="<%= static_path(@conn, "/images/admin_lte/user3-128x128.jpg") %>" class="offline" alt="User Image">
 
-          <p class="message">
-            <a href="#" class="name">
-              <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-              Alexander Pierce
-            </a>
-            I would like to meet you to discuss the latest news about
-            the arrival of the new theme. They say it is going to be one the
-            best themes on the market
-          </p>
-        </div>
-        <!-- /.item -->
-        <!-- chat item -->
-        <div class="item">
-          <img src="<%= static_path(@conn, "/images/admin_lte/user2-160x160.jpg") %>" class="offline" alt="User Image">
-
-          <p class="message">
-            <a href="#" class="name">
-              <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-              Susan Doe
-            </a>
-            I would like to meet you to discuss the latest news about
-            the arrival of the new theme. They say it is going to be one the
-            best themes on the market
-          </p>
-        </div>
-        <!-- /.item -->
       </div>
       <!-- /.chat -->
       <div class="box-footer">

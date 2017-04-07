@@ -16,7 +16,7 @@ defmodule BlogTest.AuthController do
   end
 
   #For logout
-  def delete(conn,%{"id"=>user_id} = params) do
+  def delete(conn,%{"id"=>user_id} = _params) do
     cond do
       to_string(user_id) == to_string(conn.assigns[:user].id) ->
         conn
@@ -30,7 +30,7 @@ defmodule BlogTest.AuthController do
     end
   end
 
-  def create(conn,%{"session"=>session_params} = params) do
+  def create(conn,%{"session"=>session_params} = _params) do
 
     case find_user_by_email(session_params) do
       {:ok, user} ->
@@ -45,12 +45,12 @@ defmodule BlogTest.AuthController do
   end
 
   #only sketch will be used later
-  def callback( conn, params) do
+  def callback(_conn, _params) do
 
   end
   #storing auth token
   defp store_token(conn,user) do
-    auth_token = SecureRandom.random_token
+    auth_token = Phoenix.Token.sign(conn, "user", user.id)
     token_params = %{user_id: user.id,token: auth_token,provider: "self",expiry_date: Timex.shift(Timex.now, days: 3)}
     AuthorizeToken.changeset(%AuthorizeToken{}, token_params) |> Repo.insert!
     auth_token

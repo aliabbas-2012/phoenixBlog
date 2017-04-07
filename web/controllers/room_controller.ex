@@ -13,7 +13,11 @@ defmodule BlogTest.RoomController do
       |> put_flash(:error, "You have invalid token.")
       |> redirect(to: page_path(conn, :index))
     end
-    render(conn, "show.html", room: Repo.get!(Room,id))
+
+    room = Repo.one from room in Room,
+      where: room.id == ^id,
+      preload: [messages: :user]
+    render(conn, "show.html", room: room)
   end
 
 end

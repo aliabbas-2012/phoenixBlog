@@ -8,7 +8,10 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!--  auth token -->
   <%= if @conn.assigns[:auth_token] do %>
-  <meta name="auth_token" content="<%= @conn.assigns[:auth_token] %>" />
+    <meta name="auth_token" content="<%= @conn.assigns[:auth_token] %>" />
+    <script>window.userToken = "<%= @conn.assigns[:auth_token] %>";</script>
+  <% else %>
+      <script>window.userToken = <%= nil %>;</script>
   <% end %>
 
   <!-- Bootstrap -->
@@ -350,8 +353,6 @@
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
-
-  <script>window.userId = "<%= assigns[:user] && assigns[:user].id || nil %>";</script>
 
   <!-- jQuery 2.2.3 -->
   <script src="<%= static_path(@conn, "/js/plugins/jQuery/jquery-2.2.3.min.js") %>"></script>

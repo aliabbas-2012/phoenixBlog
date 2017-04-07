@@ -2,6 +2,9 @@ defmodule BlogTest.RoomChannel do
   use Phoenix.Channel
   alias BlogTest.Room
   alias BlogTest.Repo
+  alias BlogTest.User
+  alias BlogTest.Message
+  alias BlogTest.ApplicationHelpers
 
   def join("rooms:"<> roomId, _message, socket) do
       room = Repo.get!(Room,roomId)
@@ -14,17 +17,25 @@ defmodule BlogTest.RoomChannel do
   end
 
   def handle_in("room_msg", %{"body"=>body} = payload, socket) do
-   IO.puts "-----in message braoding casting-------"
-   IO.inspect body
-   IO.inspect socket
+   msg_sender = Repo.get(User,socket.assigns.auth.user_id)
 
-   broadcast! socket, "room_msg", %{body: body,calling_name: socket.assigns.auth.user_id}
+
+   broadcast! socket, "room_msg", %{body: body,sender: ApplicationHelpers.user_full_name(msg_sender),sender_id: msg_sender.id }
    {:noreply, socket}
  end
 
- def handle_out("room_msg", payload, socket) do
-    IO.puts "-----out message-------"
-   push socket, "room_msg", payload
-   {:noreply, socket}
+ intercept ["room_msg"]
+ def handle_out("room_msg", %{body: body, sender: sender,sender_id: sender_id} = payload, socket) do
+    IO.puts "-----out and save message-------"
+    save_message(body,sender_id,List.last(String.split(socket.topic,":")))
+    push socket, "room_msg", payload
+    {:noreply, socket}
+ end
+
+ #save message in database
+ defp save_message(body,sender_id,room_id) do
+   message_params = %{user_id: sender_id,room_id: room_id,content: body}
+   IO.inspect message_params
+   Message.changeset(%Message{}, message_params) |> Repo.insert!
  end
 end

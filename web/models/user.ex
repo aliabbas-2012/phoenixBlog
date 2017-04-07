@@ -3,7 +3,8 @@ defmodule BlogTest.User do
 
   alias BlogTest.Post
   alias BlogTest.Address
-  # alias BlogTest.AuthorizeToken
+  alias BlogTest.Message
+  alias BlogTest.AuthorizeToken
   alias BlogTest.ApplicationHelpers
 
   # after_load :calc
@@ -20,6 +21,7 @@ defmodule BlogTest.User do
     field :full_name, :string, virtual: true
     has_many(:posts, Post)
     has_many(:addresses, Address)
+    has_many(:messages, Message)
     has_many(:authorize_tokens, AuthorizeToken)
 
     timestamps()
