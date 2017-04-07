@@ -10,6 +10,7 @@ defmodule BlogTest.Endpoint do
   plug Plug.Static,
     at: "/", from: :blog_test, gzip: false,
     # at: "/uploads", from: Path.expand("./uploads"), gzip: false,
+    at: "/uploads/", from: "uploads", gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
     #For uplaoding images
 
