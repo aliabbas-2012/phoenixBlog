@@ -1,0 +1,8 @@
+<div class="panel-body">
+  <div class="form-group">
+     <%= label @f, :image, class: "control-label" %>
+     <%= file_input @f, :image, class: "form-control" %>
+     <%= error_tag @f, :image %>
+  </div>
+
+</div>

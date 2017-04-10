@@ -4,6 +4,8 @@ defmodule BlogTest.User do
   alias BlogTest.Post
   alias BlogTest.Address
   alias BlogTest.Message
+  alias BlogTest.Comment
+  alias BlogTest.Image
   alias BlogTest.AuthorizeToken
   alias BlogTest.ApplicationHelpers
 
@@ -19,10 +21,12 @@ defmodule BlogTest.User do
     field :provider, :string, virtual: true
     field :token, :string, virtual: true
     field :full_name, :string, virtual: true
-    has_many(:posts, Post)
-    has_many(:addresses, Address)
-    has_many(:messages, Message)
-    has_many(:authorize_tokens, AuthorizeToken)
+    # has_many(:posts, Post)
+    has_many(:addresses, Address,on_replace: :nilify)
+    # has_many(:messages, Message)
+    # has_many(:comments, Comment)
+    has_many(:images, Image)
+    # has_many(:authorize_tokens, AuthorizeToken)
 
     timestamps()
   end
@@ -31,6 +35,11 @@ defmodule BlogTest.User do
       struct
       |>cast(params,[:user_name,:email,:password,:first_name,:last_name,:gender])
       |> cast_assoc(:addresses, required: true)
+      |> cast_assoc(:images, required: false)
+      # |> cast_assoc(:messages, required: false)
+      # |> cast_assoc(:comments, required: false)
+      # |> cast_assoc(:posts, required: false)
+
       # |> cast_assoc(:authorize_tokens, required: false)
       |>validate_required([:user_name,:email,:first_name,:last_name])
       |>unique_constraint(:email)

@@ -6,6 +6,7 @@ defmodule BlogTest.UserController do
 
   alias BlogTest.User
   alias BlogTest.Address
+  alias BlogTest.Image
   alias BlogTest.AuthorizeToken
   alias BlogTest.Email
   alias BlogTest.Mailer
@@ -20,10 +21,17 @@ defmodule BlogTest.UserController do
   end
 
   def new(conn, _params) do
-    changeset = User.changeset(%User{addresses: [
-      %Address{address_type: "Home"},
-      %Address{address_type: "Office"}
-    ]}, %{})
+    changeset = User.changeset(%User
+      {
+        addresses: [
+          %Address{address_type: "Home"},
+          %Address{address_type: "Office"}
+        ],
+        images: [
+          %Image{},
+        ]
+      },
+    %{})
 
 
     render(conn, "new.html", changeset: changeset)
@@ -46,26 +54,35 @@ defmodule BlogTest.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Repo.get!(User, id) |> Repo.preload(:addresses)
+    user = Repo.get!(User, id) |> Repo.preload(:addresses) |> Repo.preload(:images)
     render(conn, "show.html", user: user)
   end
 
   def edit(conn, %{"id" => id}) do
-    user = Repo.get!(User, id) |> Repo.preload(:addresses)
+    user = Repo.get!(User, id) |> Repo.preload(:addresses) |> Repo.preload(:images)
     changeset = User.changeset(user)
+    #POPULATE USER IF NOT FOUND
+    if  Enum.count(user.images)==0  do
+        changeset = Ecto.Changeset.put_assoc(changeset, :images, [%Image{}])
+    end
+
+
+    IO.inspect changeset
 
     render(conn, "edit.html", user: user, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Repo.get!(User, id)  |> Repo.preload(:addresses)
+    user = Repo.get!(User, id) |> Repo.preload(:addresses) |> Repo.preload(:images)
     changeset = User.changeset(user, user_params)
+    IO.puts "----------"
+    IO.inspect changeset
 
     case Repo.update(changeset) do
       {:ok, user} ->
-        conn
-        |> put_flash(:info, "User updated successfully.")
-        |> redirect(to: user_path(conn, :show, user))
+        # put_flash(conn,:info, "User updated successfully.")
+        conn  |> redirect(to: user_path(conn, :show, user))
+
       {:error, changeset} ->
         render(conn, "edit.html", user: user, changeset: changeset)
     end
