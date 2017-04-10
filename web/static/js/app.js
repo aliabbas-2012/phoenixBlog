@@ -13,49 +13,9 @@
 // to also remove its path from "config.paths.watched".
 import "phoenix_html"
 
-
-//other code
-
-var elements = document.querySelectorAll('[data-submit^=parent]')
-var len = elements.length
-
-for (var i=0; i<len; ++i) {
-  elements[i].addEventListener('click', function(event){
-    var message = this.getAttribute("data-confirm")
-    if(message === null || confirm(message)){
-      this.parentNode.submit()
-    };
-    event.preventDefault()
-    return false
-  }, false)
-}
-// ADD adresses
-$(document).ready(function() {
-  $(document).on("click","#add_address",function(e) {
-
-      e.preventDefault();
-
-    let time = new Date().getTime()
-    let template = $(this).data('template');
-    console.log(template);
-    var uniq_template = template.replace(/\[0]/g, `[${time}]`)
-    uniq_template = uniq_template.replace(/_0_/g, `_${time}_`)
-    $("div.panel.panel-primary.addresses").append(uniq_template);
-
-  })
-  //Remove address
-  $(document).on("click",".remove_address",function(e) {
-      e.preventDefault();
-      $(this).closest("div.panel-body").remove();
-  })
-
-
-});
-
 // Import local files
 //
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-//only the case when user is login
-import socket from "./socket"
+// import socket from "./socket"

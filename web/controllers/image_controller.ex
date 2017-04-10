@@ -1,7 +1,7 @@
 defmodule BlogTest.ImageController do
   use BlogTest.Web, :controller
   plug :put_layout, "admin.html"
-  
+  plug BlogTest.Plugs.CheckAuth
   alias BlogTest.Image
   alias BlogTest.Repo
 
@@ -17,11 +17,14 @@ defmodule BlogTest.ImageController do
     IO.inspect image_params
     changeset = Image.changeset(%Image{}, image_params)
     case Repo.insert(changeset) do
-      {:ok, image} ->
+      {:ok, _image} ->
+        IO.puts "here-dssd--"
         conn
         |> put_flash(:info, "Image was added")
         |> redirect(to: image_path(conn, :index))
+
       {:error, changeset} ->
+          IO.puts "here---"
         conn
         |> put_flash(:error, "Something went wrong")
         |> render("new.html", changeset: changeset)

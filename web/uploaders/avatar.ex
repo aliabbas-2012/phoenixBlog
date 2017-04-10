@@ -42,6 +42,6 @@ defmodule BlogTest.Avatar do
 
   def thumb_url(image) do
     BlogTest.Avatar.url({image.image, image}, :thumb)
-    |> Path.relative_to("/priv/static")
+    |> Path.relative_to("/priv/static") 
   end
 end
