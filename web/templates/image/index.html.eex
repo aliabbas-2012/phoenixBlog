@@ -2,5 +2,6 @@
 
 
 <%= for image <- @images do %>
-  <img src="<%= BlogTest.Avatar.url({image.image, image})%>"><br>
+  <img src='<%= BlogTest.Avatar.url({image.image, image}) |> correct_image_path %>'><br>
+  <img src='<%= BlogTest.Avatar.thumb_url(image)  %>'><br>
 <% end %>

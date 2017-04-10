@@ -30,5 +30,9 @@ defmodule BlogTest.ApplicationHelpers do
     set_local_time_zone_date|>set_date_against_timezone(datetime)|>Timex.format!("%H:%M", :strftime)
   end
 
+  def correct_image_path(path) do
+      String.replace path, "/priv/static/", "/"
+  end
+
 
 end

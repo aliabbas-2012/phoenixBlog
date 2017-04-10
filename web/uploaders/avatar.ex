@@ -30,11 +30,18 @@ defmodule BlogTest.Avatar do
 
   # Override the storage directory:
   def storage_dir(version, {file, scope}) do
-    "uploads/user/avatars/#{scope.uuid}"
+    "priv/static/images/uploads/user/avatars/#{scope.uuid}"
   end
+
+
 
   # Provide a default URL if there hasn't been a file uploaded
   # def default_url(version, scope) do
   #   "/images/avatars/default_#{version}.png"
   # end
+
+  def thumb_url(image) do
+    BlogTest.Avatar.url({image.image, image}, :thumb)
+    |> Path.relative_to("/priv/static")
+  end
 end
