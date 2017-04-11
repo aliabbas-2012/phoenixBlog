@@ -33,6 +33,18 @@ defmodule BlogTest.ApplicationHelpers do
   def correct_image_path(path) do
       String.replace path, "/priv/static/", "/"
   end
-
+  # get logo image
+  def logo_image(user) do
+    cond do
+      Enum.count(user.images)>0 ->
+        "/#{BlogTest.Avatar.thumb_url(List.first(user.images))}"
+      user.gender == "Male" ->
+        "/images/admin_lte/avatar5.png"
+      user.gender == "Female" ->
+        "/images/admin_lte/avatar3.png"
+      true ->
+        "/images/admin_lte/normal.png"
+    end
+  end
 
 end

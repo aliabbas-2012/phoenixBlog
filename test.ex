@@ -1,7 +1,10 @@
 # Create the POst. Note that the (empty) `organizations` field has to be preloaded.
+alias BlogTest.User
 alias BlogTest.Post
 alias BlogTest.Category
 alias BlogTest.Image
+alias BlogTest.Room
+alias BlogTest.Message
 alias BlogTest.Repo
 import Ecto.Query
 
@@ -62,3 +65,43 @@ Repo.get_by(User, email:  String.downcase("itsgeniusstar@gmail.com"))
 alias BlogTest.AuthorizeToken
 Repo.get_by(AuthorizeToken, user_id:  1)
 Repo.get_by(AuthorizeToken, user_id:  1, token: "2xw60hqAzLF7xiAVj8UUj_vw-cviete41491480714390")
+
+
+
+#conditional and limit based relationship (has many )
+user = Repo.get!(User, 1) |>  Repo.preload(images: from(c in Image, order_by: c.id, limit: 1))
+user = Repo.get!(User, 1) |>  Repo.preload(:images)
+
+#getting nested level records
+Repo.all(from u in User, preload: [{:posts,
+                                    [{:comments,:user},:likes]},
+                                   :drafts])
+# e.g messages
+id  = 9
+room = Repo.one(from room in Room,
+   where: room.id == ^id,
+   preload: [{:messages,[{:user,[:images]}]}])
+
+room = Repo.one(from room in Room,
+      where: room.id == ^id,
+      preload: [{:messages,[{:user,[:images]}]}]
+    )
+
+room = Repo.one(from room in Room,
+     where: room.id == ^id,
+     preload: [{:messages,[{:user,[ {images: from(c in Image, order_by: c.id, limit: 1) } ]}]}]
+   )
+
+user = Repo.get!(User, 1) |>  Repo.preload(images: from(c in Image, order_by: c.id, limit: 1))
+
+
+modela = Repo.one(from room in Room,  where: room.id == ^id )
+         |> Repo.preload(:messages)
+         |> Repo.preload(messages: :user)
+         |> Repo.preload(user: :images)
+
+ room = Repo.one(from room in Room,
+      join: c in assoc(p, :messages),
+      where: room.id == ^id,
+      preload: [messages: c]
+    )

@@ -25,12 +25,7 @@
         <!-- chat item -->
         <%= for message <- @room.messages do %>
           <div class="item">
-            <!-- temprory solution for two users images -->
-            <%= if rem(message.user_id, 2) ==0  do %>
-              <img src="<%= static_path(@conn, "/images/admin_lte/user2-160x160.jpg") %>" class="online" alt="User Image">
-            <% else %>
-                <img src="<%= static_path(@conn, "/images/admin_lte/user3-128x128.jpg") %>" class="offline" alt="User Image">
-            <% end %>
+            <img src="<%= logo_image(message.user) %>" class="online" alt="<%= user_full_name(message.user) %>">
             <p class="message">
               <a href="#" class="name">
                 <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> <%= message_time(message.inserted_at) %></small>
