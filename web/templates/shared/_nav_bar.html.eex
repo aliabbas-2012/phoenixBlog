@@ -114,6 +114,9 @@
             <div class="pull-left">
               <a href="<%= profile_path(@conn, :edit) %>" class="btn btn-default btn-flat">Profile</a>
             </div>
+            <div class="pull-left margin-left-5">
+              <a href="<%= profile_path(@conn, :edit_password) %>" class="btn btn-default btn-flat">Edit Password</a>
+            </div>
             <div class="pull-right">
 
               <%= link "Sign Out", to: auth_path(@conn, :delete, @conn.assigns[:user]), method: :delete, class: "btn btn-default btn-flat" %>

@@ -35,6 +35,7 @@ defmodule BlogTest.ApplicationHelpers do
   end
   # get logo image
   def logo_image(user) do
+    
     cond do
       Enum.count(user.images)>0 ->
         "/#{BlogTest.Avatar.thumb_url(List.first(user.images))}"

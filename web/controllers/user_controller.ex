@@ -23,6 +23,7 @@ defmodule BlogTest.UserController do
   def new(conn, _params) do
     changeset = User.changeset(%User
       {
+
         addresses: [
           %Address{address_type: "Home"},
           %Address{address_type: "Office"}

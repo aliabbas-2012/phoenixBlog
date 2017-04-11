@@ -6,6 +6,10 @@ defmodule BlogTest.ProfileController do
   alias BlogTest.Image
   alias BlogTest.User
   alias BlogTest.Address
+  import Ecto.Query
+
+
+  require IEx
 
   def edit(conn, _) do
 
@@ -40,5 +44,28 @@ defmodule BlogTest.ProfileController do
     render(conn, "show.html", user: user)
 
   end
+  #change password
+  def edit_password(conn,_) do
+    user = Repo.get!(User, conn.assigns[:user].id) |>  Repo.preload(:images)
+    changeset = User.changeset_for_edit_password(user)
+
+
+    render(conn, "edit_password.html", user: user, changeset: changeset)
+  end
+
+  def update_password(conn,%{"user" => user_params}) do
+    user = Repo.get!(User, conn.assigns[:user].id)  |> Repo.preload(:images)
+    changeset = User.changeset_for_edit_password(user, user_params)
+
+    case Repo.update(changeset) do
+      {:ok, user} ->
+        put_flash(conn,:info, "password updated successfully.")
+        conn  |> redirect(to: profile_path(conn, :show))
+
+      {:error, changeset} ->
+        render(conn, "edit_password.html", user: user, changeset: changeset)
+    end
+  end
+
 
 end

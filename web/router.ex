@@ -33,6 +33,9 @@ defmodule BlogTest.Router do
       get "/edit", ProfileController,:edit
       put "/update", ProfileController,:update
       get "/show", ProfileController,:show
+
+      get "/edit-password", ProfileController,:edit_password
+      put "/update-password", ProfileController,:update_password
     end
 
 
