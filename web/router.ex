@@ -27,6 +27,13 @@ defmodule BlogTest.Router do
     resources "/posts", PostController
     resources "/rooms", RoomController
     resources "/images", ImageController
+    resources "/profile", ProfileController,except: [:new,:index,:edit,:show,:update,:create,:delete]
+
+    scope "/profile" do
+      get "/edit", ProfileController,:edit
+      put "/update", ProfileController,:update
+      get "/show", ProfileController,:show
+    end
 
 
   end

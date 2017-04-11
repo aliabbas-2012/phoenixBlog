@@ -1,0 +1,93 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+
+  <h2><%= gettext "%{name}", name: "Profile!" %></h2>
+  <ol class="breadcrumb">
+
+    <li><a href="<%= page_path(@conn,:index) %>"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="<%= profile_path(@conn,:edit) %>"><i class="fa fa-user"></i> Edit Profile</a></li>
+    <li class="active">Profile</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+  <!-- Default box -->
+  <div class="box">
+    <div class="box-body">
+      <div class="row">
+        <div class="col-md-12">
+            <div class="text-center">
+              <img src="<%= logo_image(@user) %>" class="avatar img-circle" alt="avatar">
+
+            </div>
+        </div>
+      </div>
+
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th>User Name</th>
+              <td><%= @user.user_name %></td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td><%= @user.email %></td>
+          </tr>
+          <tr>
+            <th>First Name</th>
+              <td><%= @user.first_name %></td>
+          </tr>
+          <tr>
+            <th>Last Name</th>
+              <td><%= @user.last_name %></td>
+          </tr>
+          <tr>
+            <th>Gender</th>
+              <td><%= @user.gender %></td>
+          </tr>
+          <tr>
+            <th>Provider</th>
+              <td><%= @user.provider %></td>
+          </tr>
+
+        </tbody>
+
+      </table>
+      <%= if :erlang.length(@user.addresses)>0 do  %>
+        <div class="panel panel-primary addresses">
+              <div class="panel-heading">Addresses</div>
+              <%= for address <- @user.addresses do %>
+                  <div class="panel-body">
+                    <table class="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <th>Address Type</th>
+                          <td><%= address.address_type %></td>
+                        </tr>
+                        <tr>
+                          <th>Street</th>
+                          <td><%= address.street %></td>
+                        </tr>
+                        <tr>
+                          <th>Post code</th>
+                          <td><%= address.post_code %></td>
+                        </tr>
+                        <tr>
+                          <th>City</th>
+                          <td><%= address.city %></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+              <% end %>
+        </div>
+      <% end %>
+
+    </div>
+    <!-- /.box-footer-->
+  </div>
+  <!-- /.box -->
+
+</section>

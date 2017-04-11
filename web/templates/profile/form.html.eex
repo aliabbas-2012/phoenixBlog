@@ -1,0 +1,74 @@
+<div class="box-body">
+  <%= form_for @changeset, @action, [multipart: true], fn f -> %>
+
+    <%= if @changeset.action do %>
+      <div class="alert alert-danger">
+        <p>Oops, something went wrong! Please check the errors below.</p>
+      </div>
+      <div id="error_explanation">
+        <ul>
+          <%= for  msg <- BlogTest.ErrorHelpers.error_string_from_changeset(@changeset) do %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+
+    <% end %>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <%= text_input f, :email,class: 'form-control readonly',disabled: 'disabled' %>
+    </div>
+    <div class="form-group">
+      <label for="email">User name</label>
+      <%= text_input f, :user_name,class: 'form-control readonly',disabled: 'disabled' %>
+    </div>
+    <div class="form-group">
+      <label for="email">First Name</label>
+      <%= text_input f, :first_name,class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <label for="email">Last Name</label>
+      <%= text_input f, :last_name,class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Gender</label>
+      <%= select f, :gender,["Male": "Male", "Female": "Female"],class: 'form-control',prompt: "Choose your Gender" %>
+    </div>
+    <div class="panel panel-primary addresses">
+          <div class="panel-heading">
+            <h3 class="panel-title pull-left">Addresses</h3>
+            <%= BlogTest.HasManyView.link_to_address_fields   %>
+             <div class="clearfix"></div>
+          </div>
+          <%= inputs_for f, :addresses, fn p -> %>
+            <%= BlogTest.HasManyView.render_addresses(p,false)   %>
+          <% end %>
+    </div>
+
+    <div class="clear"></div>
+    <div class="panel panel-primary images">
+          <div class="panel-heading">Profile Image</div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-12">
+                  <div class="text-center">
+                    <img src="<%= logo_image(@user) %>" class="avatar img-circle" alt="avatar">
+                    <h6>Upload a different photo...</h6>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+          <%= inputs_for f, :images, fn p -> %>
+            <%= BlogTest.HasManyView.render_images(p,false)   %>
+          <% end %>
+    </div>
+
+
+    <div class="form-group">
+      <%= submit "Submit", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

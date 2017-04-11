@@ -61,13 +61,10 @@ defmodule BlogTest.UserController do
   def edit(conn, %{"id" => id}) do
     user = Repo.get!(User, id) |> Repo.preload(:addresses) |> Repo.preload(:images)
     changeset = User.changeset(user)
-    #POPULATE USER IF NOT FOUND
+    #POPULATE USER Images IF NOT FOUND
     if  Enum.count(user.images)==0  do
         changeset = Ecto.Changeset.put_assoc(changeset, :images, [%Image{}])
     end
-
-
-    IO.inspect changeset
 
     render(conn, "edit.html", user: user, changeset: changeset)
   end

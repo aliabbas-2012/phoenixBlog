@@ -25,7 +25,7 @@ defmodule BlogTest.User do
     has_many(:addresses, Address,on_replace: :nilify)
     # has_many(:messages, Message)
     # has_many(:comments, Comment)
-    has_many(:images, Image)
+    has_many(:images, Image,on_replace: :nilify)
     # has_many(:authorize_tokens, AuthorizeToken)
 
     timestamps()
@@ -33,7 +33,7 @@ defmodule BlogTest.User do
 
   def changeset(struct, params \\ %{}) do
       struct
-      |>cast(params,[:user_name,:email,:password,:first_name,:last_name,:gender])
+      |> cast(params,[:user_name,:email,:password,:first_name,:last_name,:gender])
       |> cast_assoc(:addresses, required: true)
       |> cast_assoc(:images, required: false)
       # |> cast_assoc(:messages, required: false)
