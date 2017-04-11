@@ -4,7 +4,9 @@ defmodule BlogTest.RoomChannel do
   alias BlogTest.Repo
   alias BlogTest.User
   alias BlogTest.Message
+  alias BlogTest.Image
   alias BlogTest.ApplicationHelpers
+  import Ecto.Query
 
   def join("rooms:"<> roomId, _message, socket) do
       room = Repo.get!(Room,roomId)
@@ -17,10 +19,10 @@ defmodule BlogTest.RoomChannel do
   end
 
   def handle_in("room_msg", %{"body"=>body} = payload, socket) do
-   msg_sender = Repo.get(User,socket.assigns.auth.user_id)
+   msg_sender = Repo.get(User,socket.assigns.auth.user_id) |> Repo.preload(images: from(c in Image, order_by: c.id, limit: 1))
 
 
-   broadcast! socket, "room_msg", %{body: body,sender: ApplicationHelpers.user_full_name(msg_sender),sender_id: msg_sender.id }
+   broadcast! socket, "room_msg", %{body: body,sender: ApplicationHelpers.user_full_name(msg_sender),sender_id: msg_sender.id,sender_logo: ApplicationHelpers.logo_image(msg_sender) }
    {:noreply, socket}
  end
 

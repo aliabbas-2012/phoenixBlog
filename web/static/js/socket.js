@@ -99,13 +99,10 @@ const createSocket = (roomId,authToken) => {
 
   channel.on("room_msg", message => {
 
-    let user_image = "user3-128x128.jpg";
-    if(message.sender_id%2==0) {
-        user_image = "user2-160x160.jpg";
-    }
+
     let msg_time = moment().format('hh:mm');
     let msg_html = `<div class="item">
-              <img src="/images/admin_lte/${user_image}" class="online" alt="User Image">
+              <img src="${message.sender_logo}" class="online" alt="User Image">
 
               <p class="message">
                 <a href="javascript:void(0);" class="name">
