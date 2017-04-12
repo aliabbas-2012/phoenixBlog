@@ -87,12 +87,22 @@ const createSocket = (roomId,authToken) => {
 
   let render_presence = (presences) => {
     console.log("------presence-------");
-    console.log(Presence.list(presences, listBy));
-    $.each(Presence.list(presences, listBy), function( index, obj ) {
-        $("a[data_user_id='"+obj['user']+"']").closest("li").addClass("active");
-        $("a[data_user_id='"+obj['user']+"']").find("i.text-login-status").removeClass("text-yellow").addClass("text-success");
-        $("a[data_user_id='"+obj['user']+"']").find("i.text-login-status").attr("title","Online");
-    });
+
+    let online_list = Presence.list(presences, listBy);
+    console.log(presences);
+    $("ul.friend-list li").each(function(){
+       if(typeof(presences[$(this).find("a.clearfix").attr('data_user_id')])!="undefined"){
+         $(this).addClass("active");
+         $(this).find("i.text-login-status").removeClass("text-yellow").addClass("text-success");
+         $(this).find("i.text-login-status").attr("title","Online");
+       }
+       else {
+         $(this).removeClass("active");
+         $(this).find("i.text-login-status").removeClass("text-success").addClass("text-yellow");
+         $(this).find("i.text-login-status").attr("title","Offline");
+       }
+    })
+
     console.log("------end presence-------");
   }
 

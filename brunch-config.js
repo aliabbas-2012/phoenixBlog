@@ -14,7 +14,8 @@ exports.config = {
       // To change the order of concatenation of files, explicitly mention here
       order: {
         before: [
-          "web/static/vendor/js/moment.js"
+          "web/static/vendor/js/moment.js",
+          "web/static/vendor/js/underscore-min.js"
         ]
       }
     },
