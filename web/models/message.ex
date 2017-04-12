@@ -4,11 +4,13 @@ defmodule BlogTest.Message do
   alias BlogTest.User
   alias BlogTest.Room
 
+  use Timex.Ecto.Timestamps
+
   schema "messages" do
     field :content, :string
     belongs_to(:user,User)
     belongs_to(:room,Room)
-    timestamps()
+    timestamps
   end
 
   @doc """

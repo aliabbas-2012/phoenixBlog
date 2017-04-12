@@ -78,13 +78,16 @@ const createSocket = (roomId,authToken) => {
   let chatInput = $("#chat-input");
   let button_enter = $("#broad_cast_chat");
   let messagesContainer = $("#chat-box");
-  function push_messages(channel,chatInput){
-    // UI Stuff
+
+  const push_messages = (channel,chatInput) => {
     channel.push("room_msg", {body:chatInput.val()});
     chatInput.val("");
   }
 
-
+  chatInput.on("presence_state", event => {
+      console.log("presence");
+      console.log(event);
+  });
   chatInput.on("keypress", event => {
 
     if(event.keyCode === 13){

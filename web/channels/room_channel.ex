@@ -11,11 +11,21 @@ defmodule BlogTest.RoomChannel do
   def join("rooms:"<> roomId, _message, socket) do
       room = Repo.get!(Room,roomId)
       IO.puts "------in #{room.name}------"
+
+      send(self, :after_join)
     {:ok, socket}
   end
   def join(_room, _params, _socket) do
     IO.puts "-----in error-------"
     {:error, %{reason: "you can only join the lobby"}}
+  end
+
+  def handle_info(:after_join, socket) do
+    push socket, "presence_state", Presence.list(socket)
+    {:ok, _} = Presence.track(socket, socket.assigns.nickname, %{
+      status: "online"
+    })
+    {:noreply, socket}
   end
 
   def handle_in("room_msg", %{"body"=>body} = payload, socket) do
