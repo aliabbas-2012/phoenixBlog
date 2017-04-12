@@ -5,7 +5,7 @@
 </section>
 <div class="row">
   <!-- Left col -->
-  <section class="col-lg-10 ">
+  <section class="col-lg-8 ">
 <!-- Chat box -->
     <div class="box box-success">
       <div class="box-header">
@@ -38,7 +38,7 @@
             </p>
             <!-- /.attachment -->
           </div>
-      <% end %>
+        <% end %>
         <!-- /.item -->
 
       </div>
@@ -55,6 +55,34 @@
     </div>
     <!-- /.box (chat box) -->
   </section>
+
+  <section class="col-lg-3">
+    <div class="box box-success">
+      <div class="box-body">
+          <!-- member list -->
+          <ul class="friend-list">
+            <%= for user <- @users do %>
+               <li class=" bounceInDown">
+
+                 <a href="#" class="clearfix" data_user_id="<%= user.id %>">
+                   <img src="<%= logo_image(user) %>" alt="" class="img-circle">
+                   <div class="friend-name">
+                     <strong><%= user_full_name(user) %></strong>
+
+                   </div>
+                   <small class="chat-alert-status label "><i class="fa fa-circle text-yellow text-login-status"title="Offline" alt="Offline"></i></small>
+                   <div class="last-message text-muted hidden">Hello, Are you there?</div>
+                   <small class="time text-muted hidden">Just now</small>
+                   <small class="chat-alert label label-danger hidden">1</small>
+                 </a>
+               </li>
+             <% end %>
+           </ul>
+      </div>
+    </div>
+
+  </section>
+  <section class="col-lg-1"></section>
 </div>
 
 <script>

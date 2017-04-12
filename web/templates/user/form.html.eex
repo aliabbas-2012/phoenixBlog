@@ -55,6 +55,16 @@
     <div class="clear"></div>
     <div class="panel panel-primary images">
           <div class="panel-heading">Profile Image</div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-12">
+                  <div class="text-center">
+                    <img src="<%= logo_image(@user) %>" class="avatar img-circle" alt="avatar">
+                    <h6>Upload a different photo...</h6>
+                  </div>
+              </div>
+            </div>
+          </div>
           <%= inputs_for f, :images, fn p -> %>
             <%= BlogTest.HasManyView.render_images(p,false)   %>
           <% end %>

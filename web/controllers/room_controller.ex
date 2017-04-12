@@ -3,6 +3,8 @@ defmodule BlogTest.RoomController do
   plug :put_layout, "admin.html"
   plug BlogTest.Plugs.CheckAuth
 
+  alias BlogTest.User
+  alias BlogTest.Image
   alias BlogTest.Room
   alias BlogTest.Message
   alias BlogTest.Repo
@@ -23,8 +25,12 @@ defmodule BlogTest.RoomController do
         where: m.inserted_at >= ^Timex.beginning_of_day(Timex.now), where: m.inserted_at <= ^Timex.end_of_day(Timex.now),
         preload: [{:user,[:images]}]
       )
+    users = Repo.all from u in User,
+      order_by: [desc: u.first_name],
+      join: c in assoc(u, :images),
+      preload: [images: c]
 
-    render(conn, "show.html", room: room,room_messages: room_messages)
+    render(conn, "show.html", room: room,room_messages: room_messages,users: users)
   end
 
 end

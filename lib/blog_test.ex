@@ -14,6 +14,8 @@ defmodule BlogTest do
       supervisor(BlogTest.Endpoint, []),
       # Start your own worker by calling: BlogTest.Worker.start_link(arg1, arg2, arg3)
       # worker(BlogTest.Worker, [arg1, arg2, arg3]),
+      # ... For chat to which user is online or not
+      supervisor(BlogTest.Presence, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

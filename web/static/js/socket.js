@@ -5,12 +5,14 @@
 // and connect at the socket path in "lib/my_app/endpoint.ex":
 
 
-import {Socket} from "phoenix"
+import {Socket,Presence} from "phoenix"
 
 // let first defined which is user is online
 
 const auth_token = $('meta[name="auth_token"]').attr('content');
+console.log("--auth_token--");
 console.log(auth_token);
+
 let socket = new Socket("/socket", {params: {token: auth_token}})
 
 // When you connect, you'll often need to authenticate the client.
@@ -59,14 +61,59 @@ let socket = new Socket("/socket", {params: {token: auth_token}})
 
 socket.connect()
 
+// Presence of user
+
+
 // Now that you are connected, you can join channels with a rooms:
 //I defined harded coded room lobby
 
 //only room specific chat
 
 const createSocket = (roomId,authToken) => {
+
+  let presences = {}
+
+  let formatTimestamp = (timestamp) => {
+    let date = new Date(timestamp)
+    return date.toLocaleTimeString()
+  }
+
+  let listBy = (user, {metas: metas}) => {
+    return {
+      user: user,
+      onlineAt: formatTimestamp(metas[0].online_at)
+    }
+  }
+
+  let render_presence = (presences) => {
+    console.log("------presence-------");
+    console.log(Presence.list(presences, listBy));
+    $.each(Presence.list(presences, listBy), function( index, obj ) {
+        $("a[data_user_id='"+obj['user']+"']").closest("li").addClass("active");
+        $("a[data_user_id='"+obj['user']+"']").find("i.text-login-status").removeClass("text-yellow").addClass("text-success");
+        $("a[data_user_id='"+obj['user']+"']").find("i.text-login-status").attr("title","Online");
+    });
+    console.log("------end presence-------");
+  }
+
   let channel = socket.channel(`rooms:${roomId}`, {auth_token: authToken})
+  console.log("------channel-------");
   console.log(channel);
+
+  channel.on("presence_state", state => {
+    presences = Presence.syncState(presences, state)
+    console.log("--in state--");
+    console.log(presences);
+    render_presence(presences)
+  })
+
+  channel.on("presence_diff", diff => {
+    presences = Presence.syncDiff(presences, diff)
+    console.log("--in diff--");
+    render_presence(presences)
+  })
+
+
   //error call back
   //channel.onError(e =>    window.location.href = "/auth-token-verification/");
 
@@ -79,15 +126,14 @@ const createSocket = (roomId,authToken) => {
   let button_enter = $("#broad_cast_chat");
   let messagesContainer = $("#chat-box");
 
+
+
   const push_messages = (channel,chatInput) => {
     channel.push("room_msg", {body:chatInput.val()});
     chatInput.val("");
   }
 
-  chatInput.on("presence_state", event => {
-      console.log("presence");
-      console.log(event);
-  });
+
   chatInput.on("keypress", event => {
 
     if(event.keyCode === 13){
@@ -100,9 +146,8 @@ const createSocket = (roomId,authToken) => {
   });
 
 
-  channel.on("room_msg", message => {
-
-
+  let renderMessage = (message) => {
+    console.log(message);
     let msg_time = moment().format('hh:mm');
     let msg_html = `<div class="item">
               <img src="${message.sender_logo}" class="online" alt="User Image">
@@ -118,12 +163,17 @@ const createSocket = (roomId,authToken) => {
     // messagesContainer.append(`<br/>[${today}] ${message.body}`)
     messagesContainer.append(msg_html);
     //scroll to bottom
-    $("body, html").animate({
-        scrollTop: $(document).height()
-    }, 400);
-  })
+    // $("body, html").animate({
+    //     scrollTop: $(document).height()
+    // }, 400);
+
+    //messagesContainer.scrollTop = messageList.scrollHeight;
+  }
+  //render messages call
+  channel.on("room_msg", message => renderMessage(message))
+
 }
 
 window.createSocket = createSocket;
 
-export default socket
+// export default socket

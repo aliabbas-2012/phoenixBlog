@@ -29,7 +29,7 @@ defmodule BlogTest.User do
     has_many(:addresses, Address,on_replace: :nilify)
     # has_many(:messages, Message)
     # has_many(:comments, Comment)
-    has_many(:images, Image,on_replace: :nilify)
+    has_many(:images, Image,on_replace: :delete)
     # has_many(:authorize_tokens, AuthorizeToken)
 
 
@@ -73,13 +73,9 @@ defmodule BlogTest.User do
 
   #cast_assoc user on create and update
   defp change_cast_associatios(changeset) do
-    if  get_field(changeset, :create_update)==true  do
-      changeset
-      |> cast_assoc(:addresses, required: true)
-      |> cast_assoc(:images, required: false)
-    else
-      changeset
-    end
+    changeset
+    |> cast_assoc(:addresses, required: true)
+    |> cast_assoc(:images, required: false)
   end
 
   #special condition if record found
@@ -93,7 +89,7 @@ defmodule BlogTest.User do
       changeset
     end
   end
-
+  #------- for change password only
   defp validate_change_password(changeset) do
 
     changeset

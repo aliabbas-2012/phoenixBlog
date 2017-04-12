@@ -1,18 +1,20 @@
 defmodule BlogTest.RoomChannel do
-  use Phoenix.Channel
+  use BlogTest.Web, :channel
+  alias BlogTest.Presence
+
   alias BlogTest.Room
   alias BlogTest.Repo
   alias BlogTest.User
   alias BlogTest.Message
   alias BlogTest.Image
   alias BlogTest.ApplicationHelpers
+
   import Ecto.Query
 
   def join("rooms:"<> roomId, _message, socket) do
-      room = Repo.get!(Room,roomId)
-      IO.puts "------in #{room.name}------"
-
-      send(self, :after_join)
+    send(self, :after_join)
+    # room = Repo.get!(Room,roomId)
+    IO.puts "---HERE---in room------"
     {:ok, socket}
   end
   def join(_room, _params, _socket) do
@@ -21,18 +23,23 @@ defmodule BlogTest.RoomChannel do
   end
 
   def handle_info(:after_join, socket) do
-    push socket, "presence_state", Presence.list(socket)
-    {:ok, _} = Presence.track(socket, socket.assigns.nickname, %{
-      status: "online"
-    })
-    {:noreply, socket}
+     IO.puts "------handle info presense state-------"
+     push socket, "presence_state", Presence.list(socket)
+     {:ok, _} = Presence.track(socket, socket.assigns.auth.user_id, %{
+       online_at: :os.system_time(:milli_seconds)
+     })
+     {:noreply, socket}
   end
 
   def handle_in("room_msg", %{"body"=>body} = payload, socket) do
    msg_sender = Repo.get(User,socket.assigns.auth.user_id) |> Repo.preload(images: from(c in Image, order_by: c.id, limit: 1))
-
-
-   broadcast! socket, "room_msg", %{body: body,sender: ApplicationHelpers.user_full_name(msg_sender),sender_id: msg_sender.id,sender_logo: ApplicationHelpers.logo_image(msg_sender) }
+   broadcast! socket, "room_msg", %{
+          body: body,
+          sender: ApplicationHelpers.user_full_name(msg_sender),
+          sender_id: msg_sender.id,
+          sender_logo: ApplicationHelpers.logo_image(msg_sender),
+          timestamp: :os.system_time(:millisecond)
+        }
    {:noreply, socket}
  end
 

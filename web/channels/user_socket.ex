@@ -48,7 +48,9 @@ defmodule BlogTest.UserSocket do
       nil ->
          :error
       auth ->
+        # socket|>assign(socket, :auth, auth)|> assign(socket, :auth, auth)
         {:ok, assign(socket, :auth, auth)}
+
     end
   end
 end
