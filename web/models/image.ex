@@ -6,6 +6,8 @@ defmodule BlogTest.Image do
 
   use Arc.Ecto.Schema
 
+  require IEx
+
   schema "images" do
     field :image, BlogTest.Avatar.Type
     field :uuid, :string
@@ -22,6 +24,9 @@ defmodule BlogTest.Image do
   def changeset(struct, params \\ %{}) do
     IO.puts "her image e--------"
     IO.inspect params
+
+    # IEx.pry
+
     params = if params["image"] do
      %{ params | "image" => %Plug.Upload{ params["image"] | filename: UUID.uuid4() <> Path.extname(params["image"].filename) } }
    else
@@ -30,9 +35,18 @@ defmodule BlogTest.Image do
     struct
     |> cast(params, [:delete])
     |> set_delete_action
-    |> put_change(:uuid, UUID.uuid4())
+    |> add_uuid_folder
     |> cast_attachments(params, [:image])
     |> validate_required([:image])
+  end
+
+  defp add_uuid_folder(changeset) do
+    if changeset.valid? && get_field(changeset, :id)==nil do
+      changeset
+      |> Ecto.Changeset.put_change(:uuid,UUID.uuid4())
+    else
+      changeset
+    end
   end
 
   defp set_delete_action(changeset) do

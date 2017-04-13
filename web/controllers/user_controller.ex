@@ -78,9 +78,7 @@ defmodule BlogTest.UserController do
 
     case Repo.update(changeset) do
       {:ok, user} ->
-        # put_flash(conn,:info, "User updated successfully.")
-        conn  |> redirect(to: user_path(conn, :show, user))
-
+        conn  |> put_flash(:info, "User updated successfully.") |> redirect(to: user_path(conn, :show, user))
       {:error, changeset} ->
         render(conn, "edit.html", user: user, changeset: changeset)
     end
