@@ -20,6 +20,13 @@ String.prototype.toCapitalize = function(){
    return this.toLowerCase().replace(/^.|\s\S/g, function(a) { return a.toUpperCase(); });
 }
 
+String.prototype.isEmpty = function(){
+   return $.trim(this) =="" ? true : false
+}
+String.prototype.isNotEmpty = function(){
+   return $.trim(this) =="" ? 0 : 1
+}
+
 var elements = document.querySelectorAll('[data-submit^=parent]')
 var len = elements.length
 

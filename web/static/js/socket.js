@@ -171,7 +171,9 @@ const createSocket = (roomId,authToken) => {
       push_messages(channel,chatInput);
     }
     else {
-      channel.push('user_typing', { status: 1 });
+      console.log(chatInput.val())
+      console.log(chatInput.val().isNotEmpty());
+      channel.push('user_typing', { status: chatInput.val().isNotEmpty() });
     }
   });
 
@@ -190,6 +192,7 @@ const createSocket = (roomId,authToken) => {
   let renderMessage = (message) => {
     console.log(message);
     let msg_time = moment().format('hh:mm');
+    let element_id = `typing-by-${message.sender_id}`
     let msg_html = `<div class="item">
               <img src="${message.sender_logo}" class="online" alt="User Image">
 
@@ -201,22 +204,22 @@ const createSocket = (roomId,authToken) => {
                 ${message.body}
               </p>
           </div>`
-    // messagesContainer.append(`<br/>[${today}] ${message.body}`)
     messagesContainer.append(msg_html);
-    //scroll to bottom
-    // $("body, html").animate({
-    //     scrollTop: $(document).height()
-    // }, 400);
-    console.log("---scroll---");
+    //remove typing indication from sender
+    $("#"+element_id).remove();
+    //scroll to down
     $(messagesContainer).scrollTop(messagesContainer[0].scrollHeight)
   }
 
   let renderUserTyping = (message) => {
     console.log("---in user typing---");
-    console.log(message);
+
     let element_id = `typing-by-${message.typing_by}`
     if($("#"+element_id).length==0){
       let msg_typing_html = `<small class="text-muted" id="${element_id}">${message.helping_text}</small>`
+      if(message.status == 0){
+        msg_typing_html = "";
+      }
       $("#user_typing_status").append(msg_typing_html);
     }
   }

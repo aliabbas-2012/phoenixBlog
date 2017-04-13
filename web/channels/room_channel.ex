@@ -62,6 +62,7 @@ defmodule BlogTest.RoomChannel do
     broadcast! socket, "user_typing", %{
            helping_text: "#{ApplicationHelpers.user_full_name(socket.assigns.auth.user)} is typing...",
            typing_by: socket.assigns.auth.user.id,
+           status: status
     }
     {:noreply, socket}
  end
@@ -71,6 +72,17 @@ defmodule BlogTest.RoomChannel do
     IO.puts "-----out and save message-------"
     save_message(body,sender_id,List.last(String.split(socket.topic,":")))
     push socket, "room_msg", payload
+    {:noreply, socket}
+ end
+
+ intercept ["user_typing"]
+ def handle_out("user_typing", %{typing_by: typing_by} = payload, socket) do
+    #avoid current user to see who is typing
+    if socket.assigns.auth.user.id != typing_by do
+      IO.puts "---user typing handle out"
+      IO.inspect payload
+      push socket, "user_typing", payload
+    end
     {:noreply, socket}
  end
 
