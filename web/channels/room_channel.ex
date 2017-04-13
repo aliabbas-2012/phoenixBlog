@@ -55,6 +55,16 @@ defmodule BlogTest.RoomChannel do
     IO.puts status
     {:noreply, socket}
  end
+ # user is typing
+ def handle_in("user_typing", %{"status" => status}, socket) do
+    IO.puts "-------new status of user typing-----"
+    IO.puts status
+    broadcast! socket, "user_typing", %{
+           helping_text: "#{ApplicationHelpers.user_full_name(socket.assigns.auth.user)} is typing...",
+           typing_by: socket.assigns.auth.user.id,
+    }
+    {:noreply, socket}
+ end
 
  intercept ["room_msg"]
  def handle_out("room_msg", %{body: body, sender: sender,sender_id: sender_id} = payload, socket) do

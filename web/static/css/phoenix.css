@@ -1,3 +1,6 @@
+div.clear {
+  clear:both;
+}
 .friend-list {
     list-style: none;
     margin-left: -40px;

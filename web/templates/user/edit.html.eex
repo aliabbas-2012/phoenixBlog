@@ -13,7 +13,7 @@
 
   <!-- Default box -->
   <div class="box">
-    <%= render "form.html", changeset: @changeset, user: @user,
-                            action: user_path(@conn, :update, @user) %>
+    <%= render "form.html", changeset: @changeset, model: @model,
+                            action: user_path(@conn, :update, @model) %>
   </div>
 </div>

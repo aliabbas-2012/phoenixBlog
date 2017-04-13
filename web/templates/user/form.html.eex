@@ -59,7 +59,10 @@
             <div class="row">
               <div class="col-md-12">
                   <div class="text-center">
-                    <img src="<%= logo_image(@user) %>" class="avatar img-circle" alt="avatar">
+                    <% IO.inspect(@model) %>
+                    <%= if @model.id do %>
+                      <img src="<%= logo_image(@model) %>" class="avatar img-circle" alt="avatar">
+                    <% end %>
                     <h6>Upload a different photo...</h6>
                   </div>
               </div>

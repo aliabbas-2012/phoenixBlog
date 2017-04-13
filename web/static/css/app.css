@@ -8,7 +8,9 @@
 
 /*custom css*/
 
-
+div.form-group > span.help-block {
+  color:red;
+}
 #error_explanation {
   color: #f00;
 }

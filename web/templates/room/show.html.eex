@@ -46,10 +46,14 @@
       <div class="box-footer">
         <div class="input-group">
           <input class="form-control" placeholder="Type message..." id="chat-input">
-
           <div class="input-group-btn">
             <button type="button" class="btn btn-success" id="broad_cast_chat"><i class="fa fa-plus"></i></button>
           </div>
+
+        </div>
+        <div class="clear"></div>
+        <div id="user_typing_status">
+            
         </div>
       </div>
     </div>

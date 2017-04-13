@@ -170,6 +170,9 @@ const createSocket = (roomId,authToken) => {
     if(event.keyCode === 13){
       push_messages(channel,chatInput);
     }
+    else {
+      channel.push('user_typing', { status: 1 });
+    }
   });
 
   statusInput.on("click",(event)=> {
@@ -207,9 +210,19 @@ const createSocket = (roomId,authToken) => {
 
     //messagesContainer.scrollTop = messageList.scrollHeight;
   }
+
+  let renderUserTyping = (message) => {
+    console.log("---in user typing---");
+    console.log(message);
+    let element_id = `typing-by-${message.typing_by}`
+    if($("#"+element_id).length==0){
+      let msg_typing_html = `<small class="text-muted" id="${element_id}">${message.helping_text}</small>`
+      $("#user_typing_status").append(msg_typing_html);
+    }
+  }
   //render messages call
   channel.on("room_msg", message => renderMessage(message))
-
+  channel.on("user_typing", message => renderUserTyping(message))
 }
 
 window.createSocket = createSocket;

@@ -35,7 +35,7 @@ defmodule BlogTest.UserController do
     %{})
 
 
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset,model: %User{})
   end
 
   def create(conn, %{"user" => user_params}) do
@@ -50,7 +50,7 @@ defmodule BlogTest.UserController do
         |> put_flash(:info, "User created successfully.")
         |> redirect(to: user_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset,model: %User{})
     end
   end
 
@@ -67,7 +67,7 @@ defmodule BlogTest.UserController do
         changeset = Ecto.Changeset.put_assoc(changeset, :images, [%Image{}])
     end
 
-    render(conn, "edit.html", user: user, changeset: changeset)
+    render(conn, "edit.html", model: user, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
@@ -80,7 +80,7 @@ defmodule BlogTest.UserController do
       {:ok, user} ->
         conn  |> put_flash(:info, "User updated successfully.") |> redirect(to: user_path(conn, :show, user))
       {:error, changeset} ->
-        render(conn, "edit.html", user: user, changeset: changeset)
+        render(conn, "edit.html", model: user, changeset: changeset)
     end
   end
 
