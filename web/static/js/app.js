@@ -16,9 +16,14 @@ import "phoenix_html"
 
 
 //other code
+String.prototype.toCapitalize = function(){
+   return this.toLowerCase().replace(/^.|\s\S/g, function(a) { return a.toUpperCase(); });
+}
 
 var elements = document.querySelectorAll('[data-submit^=parent]')
 var len = elements.length
+
+
 
 for (var i=0; i<len; ++i) {
   elements[i].addEventListener('click', function(event){

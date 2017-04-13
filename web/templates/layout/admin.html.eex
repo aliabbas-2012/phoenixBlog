@@ -75,9 +75,9 @@
           <div class="pull-left image">
             <img src="<%= logo_image(@conn.assigns[:user]) %>" class="img-circle" alt="User Image">
           </div>
-          <div class="pull-left info">
+          <div class="pull-left info current-login-status">
             <p><%= user_full_name(@conn.assigns[:user]) %></p>
-            <a href="javascript:void(0)"><i class="fa fa-circle text-success"></i> Online</a>
+            <a href="javascript:void(0)"><i class="fa fa-circle text-success" ></i> Online</a>
           </div>
         </div>
       <% end %>

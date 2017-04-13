@@ -24,9 +24,11 @@ defmodule BlogTest.RoomChannel do
 
   def handle_info(:after_join, socket) do
      IO.puts "------handle info presense state-------"
+     IO.inspect  Presence.list(socket)
      push socket, "presence_state", Presence.list(socket)
      {:ok, _} = Presence.track(socket, socket.assigns.auth.user_id, %{
-       online_at: :os.system_time(:milli_seconds)
+       status_at: :os.system_time(:milli_seconds),
+       status: "online"
      })
      {:noreply, socket}
   end
@@ -41,6 +43,17 @@ defmodule BlogTest.RoomChannel do
           timestamp: :os.system_time(:millisecond)
         }
    {:noreply, socket}
+ end
+ #manage status
+ def handle_in("new_status", %{"status" => status}, socket) do
+    IO.puts "-------new status of current user------"
+    IO.puts status
+    {:ok, _} = Presence.update(socket, socket.assigns.auth.user_id, %{
+      status: status,
+      status_at: :os.system_time(:milli_seconds),
+    })
+    IO.puts status
+    {:noreply, socket}
  end
 
  intercept ["room_msg"]

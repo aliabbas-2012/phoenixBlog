@@ -81,29 +81,49 @@ const createSocket = (roomId,authToken) => {
   let listBy = (user, {metas: metas}) => {
     return {
       user: user,
-      onlineAt: formatTimestamp(metas[0].online_at)
+      onlineAt: formatTimestamp(metas[0].status_at)
     }
   }
 
+  let user_status_class = (status) => {
+      switch(status.toLowerCase()) {
+         case "online": {
+           return "fa fa-circle text-success"
+         }
+         case "busy": {
+            return "fa fa-circle text-red"
+            break;
+         }
+         default: {
+            return "fa fa-circle text-yellow"
+            break;
+         }
+      }
+  }
+
   let render_presence = (presences) => {
-    console.log("------presence-------");
+    console.log("========presence==========");
 
     let online_list = Presence.list(presences, listBy);
-    console.log(presences);
+
     $("ul.friend-list li").each(function(){
        if(typeof(presences[$(this).find("a.clearfix").attr('data_user_id')])!="undefined"){
-         $(this).addClass("active");
-         $(this).find("i.text-login-status").removeClass("text-yellow").addClass("text-success");
-         $(this).find("i.text-login-status").attr("title","Online");
+
+        let presence = presences[$(this).find("a.clearfix").attr('data_user_id')];
+         //for case only message
+         $(this).find("small.chat-alert-status").find("i").attr("class",user_status_class(presence.metas[0].status));
+         $(this).find("small.chat-alert-status").find("i").attr("title",presence.metas[0].status.toCapitalize() );
+
        }
        else {
          $(this).removeClass("active");
-         $(this).find("i.text-login-status").removeClass("text-success").addClass("text-yellow");
-         $(this).find("i.text-login-status").attr("title","Offline");
+
+         $(this).find("small.chat-alert-status").find("i").attr("class","fa fa-circle text-yellow");
+         $(this).find("small.chat-alert-status").find("i").attr("title","Offline");
        }
     })
 
-    console.log("------end presence-------");
+    console.log("=======end presence=======");
   }
 
   let channel = socket.channel(`rooms:${roomId}`, {auth_token: authToken})
@@ -135,6 +155,7 @@ const createSocket = (roomId,authToken) => {
   let chatInput = $("#chat-input");
   let button_enter = $("#broad_cast_chat");
   let messagesContainer = $("#chat-box");
+  let statusInput = $("div.btn-group-status.btn-group button")
 
 
 
@@ -150,6 +171,13 @@ const createSocket = (roomId,authToken) => {
       push_messages(channel,chatInput);
     }
   });
+
+  statusInput.on("click",(event)=> {
+     //event.preventDefault();
+     console.log("------pushing  status -----");
+     $("div.current-login-status>a").html( `<i class="${user_status_class($(event.currentTarget).attr("title"))}"></i> ${$(event.currentTarget).attr("title").toCapitalize()}`)
+     channel.push('new_status', { status: $(event.currentTarget).attr("title") });
+  })
 
   button_enter.on("click", event => {
     push_messages(channel,chatInput);

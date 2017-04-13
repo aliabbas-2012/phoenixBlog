@@ -1,5 +1,6 @@
 # Create the POst. Note that the (empty) `organizations` field has to be preloaded.
 alias BlogTest.User
+alias BlogTest.AuthorizeToken
 alias BlogTest.Post
 alias BlogTest.Category
 alias BlogTest.Image
@@ -105,3 +106,18 @@ modela = Repo.one(from room in Room,  where: room.id == ^id )
       where: room.id == ^id,
       preload: [messages: c]
     )
+
+case Repo.get_by(AuthorizeToken, token:  auth_token) |> Repo.preload(:user)  do
+  nil ->
+     :error
+  auth ->
+    IO.puts "---verifying token---"
+    IO.inspect auth
+
+end
+
+auth_token = "SFMyNTY.g3QAAAACZAAEZGF0YWEBZAAGc2lnbmVkbgYAa3gQZlsB.V5jfbZvn9TnH4uEQBKs6o-N1lwgitfA2mBbFsvvmZe8"
+auth_token = ""
+auth = Repo.one(from authorize in AuthorizeToken,
+   where: authorize.token == ^auth_token
+)  |>  Repo.preload(user: from(c in User))

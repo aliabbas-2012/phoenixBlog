@@ -2,6 +2,8 @@ defmodule BlogTest.UserSocket do
   use Phoenix.Socket
   alias BlogTest.Repo
   alias BlogTest.AuthorizeToken
+  alias BlogTest.User
+  import Ecto.Query
 
   ## Channels (example)
   channel "rooms:*", BlogTest.RoomChannel
@@ -44,10 +46,12 @@ defmodule BlogTest.UserSocket do
   def id(_socket), do: nil
 
   defp verify_token_from_database(socket,auth_token) do
-    case Repo.get_by(AuthorizeToken, token:  auth_token)  do
+    case  Repo.one(from authorize in AuthorizeToken,where: authorize.token == ^auth_token)|>Repo.preload(user: from(c in User)) do
       nil ->
          :error
       auth ->
+        IO.puts "---verifying token---"
+        IO.inspect auth
         # socket|>assign(socket, :auth, auth)|> assign(socket, :auth, auth)
         {:ok, assign(socket, :auth, auth)}
 

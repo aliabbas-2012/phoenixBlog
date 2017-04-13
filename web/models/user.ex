@@ -30,7 +30,7 @@ defmodule BlogTest.User do
     # has_many(:messages, Message)
     # has_many(:comments, Comment)
     has_many(:images, Image,on_replace: :delete)
-    # has_many(:authorize_tokens, AuthorizeToken)
+    # has_many(:authorize_tokens, AuthorizeToken,on_replace: :delete)
 
 
     #related to password update
