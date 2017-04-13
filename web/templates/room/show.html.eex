@@ -53,7 +53,7 @@
         </div>
         <div class="clear"></div>
         <div id="user_typing_status">
-            
+
         </div>
       </div>
     </div>
@@ -91,6 +91,8 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    window.createSocket('<%= @room.id %>','<%= @conn.assigns[:auth_token] %>')
+    window.createSocket('<%= @room.id %>','<%= @conn.assigns[:auth_token] %>');
+    var messagesContainer = $("#chat-box");
+    $(messagesContainer).scrollTop(messagesContainer[0].scrollHeight)
   });
 </script>

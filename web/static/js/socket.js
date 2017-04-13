@@ -207,8 +207,8 @@ const createSocket = (roomId,authToken) => {
     // $("body, html").animate({
     //     scrollTop: $(document).height()
     // }, 400);
-
-    //messagesContainer.scrollTop = messageList.scrollHeight;
+    console.log("---scroll---");
+    $(messagesContainer).scrollTop(messagesContainer[0].scrollHeight)
   }
 
   let renderUserTyping = (message) => {
