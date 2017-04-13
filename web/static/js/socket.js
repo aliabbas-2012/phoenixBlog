@@ -230,4 +230,4 @@ const createSocket = (roomId,authToken) => {
 
 window.createSocket = createSocket;
 
-// export default socket
+export default socket

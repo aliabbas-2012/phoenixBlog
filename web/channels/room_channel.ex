@@ -35,13 +35,16 @@ defmodule BlogTest.RoomChannel do
 
   def handle_in("room_msg", %{"body"=>body} = payload, socket) do
    msg_sender = Repo.get(User,socket.assigns.auth.user_id) |> Repo.preload(images: from(c in Image, order_by: c.id, limit: 1))
-   broadcast! socket, "room_msg", %{
+   message = %{
           body: body,
           sender: ApplicationHelpers.user_full_name(msg_sender),
           sender_id: msg_sender.id,
           sender_logo: ApplicationHelpers.logo_image(msg_sender),
           timestamp: :os.system_time(:millisecond)
         }
+   broadcast! socket, "room_msg", message
+   #save message to database
+   save_message(message,socket,List.last(String.split(socket.topic,":")))
    {:noreply, socket}
  end
  #manage status
@@ -67,16 +70,21 @@ defmodule BlogTest.RoomChannel do
     {:noreply, socket}
  end
 
- intercept ["room_msg"]
- def handle_out("room_msg", %{body: body, sender: sender,sender_id: sender_id} = payload, socket) do
-    IO.puts "-----out and save message-------"
-    save_message(body,sender_id,List.last(String.split(socket.topic,":")))
-    push socket, "room_msg", payload
+ intercept ["room_msg","user_typing"]
+ def handle_out(event,payload, socket) do
+   case  event do
+     "room_msg" ->
+        send_message(payload,socket,List.last(String.split(socket.topic,":")))
+     "user_typing" ->
+         user_typing_call_back(payload,socket)
+   end
+    IO.inspect event
+    IO.puts "-----out and sending message-------"
     {:noreply, socket}
  end
 
- intercept ["user_typing"]
- def handle_out("user_typing", %{typing_by: typing_by} = payload, socket) do
+
+ defp user_typing_call_back(%{typing_by: typing_by} = payload, socket) do
     #avoid current user to see who is typing
     if socket.assigns.auth.user.id != typing_by do
       IO.puts "---user typing handle out"
@@ -87,9 +95,13 @@ defmodule BlogTest.RoomChannel do
  end
 
  #save message in database
- defp save_message(body,sender_id,room_id) do
+ defp save_message(%{body: body, sender: sender,sender_id: sender_id} = payload,socket,room_id) do
    message_params = %{user_id: sender_id,room_id: room_id,content: body}
    IO.inspect message_params
    Message.changeset(%Message{}, message_params) |> Repo.insert!
+ end
+ #send message to users
+ defp send_message(%{body: body, sender: sender,sender_id: sender_id} = payload,socket,room_id) do
+   push socket, "room_msg", payload
  end
 end
