@@ -65,3 +65,7 @@ div#chat-box {
   max-height: 500px;
   overflow-x: hidden;
 }
+div#user_typing_status small.text-muted {
+  clear:both;
+  display: block;
+}

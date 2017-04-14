@@ -149,7 +149,7 @@ const createSocket = (roomId,authToken) => {
 
   channel.join()
     .receive("ok", resp => { console.log("Joined successfully", resp) })
-    .receive("error", resp => { console.log("Unable to join", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp); socket.disconnect(); })
 
 
   let chatInput = $("#chat-input");
@@ -223,9 +223,28 @@ const createSocket = (roomId,authToken) => {
       $("#user_typing_status").append(msg_typing_html);
     }
   }
+  // leaving room 
+  let renderLeaveRoom = (message) => {
+     console.log("-----leaving ----room--")
+     console.log(message)
+
+     let msg_html =`<div class="item text-center">
+       <div class="chat-box-left-room-line">
+         <abbr class="left_room">
+           <span class="fa fa-exclamation-triangle"></span>
+           ${message.leaving_by} ${message.body}
+         </abbr>
+
+       </div>
+     </div>`
+     messagesContainer.append(msg_html);
+     $(messagesContainer).scrollTop(messagesContainer[0].scrollHeight)
+  }
   //render messages call
   channel.on("room_msg", message => renderMessage(message))
   channel.on("user_typing", message => renderUserTyping(message))
+  channel.on("leave_room", message => renderLeaveRoom(message))
+
 }
 
 window.createSocket = createSocket;

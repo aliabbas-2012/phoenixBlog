@@ -27,18 +27,20 @@
 								<abbr class="timestamp"><%= Timex.format!(Timex.today, "%B %dth, %Y", :strftime) %></abbr>
 			  </div>
         <%= for message <- @room_messages do %>
-          <div class="item">
-            <img src="<%= logo_image(message.user) %>" class="online" alt="<%= user_full_name(message.user) %>">
-            <p class="message">
-              <a href="#" class="name">
-                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> <%= message_time(message.inserted_at) %></small>
-                <%= user_full_name(message.user) %>
-              </a>
-              <%= message.content %>
-            </p>
+            <div class="item">
+              <img src="<%= logo_image(message.user) %>" class="online" alt="<%= user_full_name(message.user) %>">
+              <p class="message">
+                <a href="#" class="name">
+                  <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> <%= message_time(message.inserted_at) %></small>
+                  <%= user_full_name(message.user) %>
+                </a>
+                <%= message.content %>
+              </p>
             <!-- /.attachment -->
           </div>
+
         <% end %>
+    
         <!-- /.item -->
 
       </div>

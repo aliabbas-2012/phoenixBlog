@@ -50,3 +50,15 @@ div.form-group > span.help-block {
     color: #fff;
     padding: 0 11px;
 }
+#chat-box .chat-box-left-room-line {
+  border-bottom: 1px solid #595252;
+  height: 12px;
+  margin: 7px 0 20px;
+  position: relative;
+  text-align: center;
+}
+#chat-box  abbr.left_room {
+    background: #ffff none repeat scroll 0 0;
+    color: #333;
+    padding: 0 11px;
+}

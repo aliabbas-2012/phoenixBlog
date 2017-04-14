@@ -83,6 +83,21 @@ defmodule BlogTest.RoomChannel do
     {:noreply, socket}
  end
 
+ #Leave user
+ def terminate(reason, socket) do
+    IO.puts socket.assigns.auth.user.first_name
+    IO.puts "-------------"
+    IO.puts "> leave #{inspect reason}"
+
+    message = %{
+           body: "left the room ",
+           leaving_by: ApplicationHelpers.user_full_name(socket.assigns.auth.user),
+           timestamp: :os.system_time(:millisecond)
+         }
+    broadcast! socket, "leave_room", message
+    :ok
+ end
+
 
  defp user_typing_call_back(%{typing_by: typing_by} = payload, socket) do
     #avoid current user to see who is typing
