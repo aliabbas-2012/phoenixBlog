@@ -3,13 +3,17 @@ defmodule BlogTest.Router do
 
 
   pipeline :browser do
-    plug :accepts, ["html","jpg"]
+    plug :accepts, ["html","jpg","js"]
     plug :fetch_session
     plug :fetch_flash
-    plug :protect_from_forgery
+    # plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug BlogTest.Plugs.SetUser
     # plug BlogTest.SetStatic
+  end
+
+  pipeline :csrf do
+     plug :protect_from_forgery # to here
   end
 
   pipeline :api do
@@ -17,10 +21,12 @@ defmodule BlogTest.Router do
   end
 
   scope "/", BlogTest do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :csrf] # Use the default browser stack
 
     get "/", PageController, :index
     get "/auth-token-verification", PageController, :verify_token
+
+
 
     resources "/users", UserController
     resources "/categories", CategoryController
@@ -37,8 +43,11 @@ defmodule BlogTest.Router do
       get "/edit-password", ProfileController,:edit_password
       put "/update-password", ProfileController,:update_password
     end
+  end
 
-
+  scope "/remote", BlogTest do
+    pipe_through [:browser]
+    get "/test-js.js", PageController, :test_js
   end
 
   scope "/auth", BlogTest do

@@ -14,6 +14,8 @@
       <script>window.userToken = <%= nil %>;</script>
   <% end %>
 
+  <meta name="csrf-token" content="<%= get_csrf_token() %>"/>
+
   <!-- Bootstrap -->
   <link rel="stylesheet" href="<%= static_path(@conn, "/css/bootstrap/bootstrap.min.css") %>">
   <!-- Font Awesome -->
@@ -138,7 +140,7 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    
+
       <%= if get_flash(@conn, :info) do   %>
           <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <% end %>

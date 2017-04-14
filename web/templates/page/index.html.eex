@@ -31,11 +31,11 @@
     <% end %>
     <!-- /.box-body -->
     <div class="box-footer">
-
+        <a href="<%= page_path(@conn,:test_js) %>"  ujs-remote>Patch remotely</a>
     </div>
     <!-- /.box-footer-->
   </div>
-  
+
   <!-- /.box -->
 
 </section>
