@@ -121,3 +121,17 @@ auth_token = ""
 auth = Repo.one(from authorize in AuthorizeToken,
    where: authorize.token == ^auth_token
 )  |>  Repo.preload(user: from(c in User))
+
+
+
+room = Repo.one(from room in Room,
+   where: room.user_id == 1,
+   where: or room.user_id_2 == 2
+   )
+
+   room = Repo.one(from room in Room,
+      where: (room.user_id == 1 and room.user_id_2 == 3) or (room.user_id == 3 and room.user_id_2 == 1)
+    )
+
+
+posts = Post |> where([p], p.id in [1, 2]) |> Repo.all

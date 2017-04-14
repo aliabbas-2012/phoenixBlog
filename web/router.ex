@@ -16,6 +16,15 @@ defmodule BlogTest.Router do
      plug :protect_from_forgery # to here
   end
 
+  pipeline :chat do
+    plug :fetch_session
+    plug :fetch_flash
+    plug :put_secure_browser_headers
+    plug BlogTest.Plugs.SetUser
+
+    plug :accepts, ["json","html"]
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -48,6 +57,11 @@ defmodule BlogTest.Router do
   scope "/remote", BlogTest do
     pipe_through [:browser]
     get "/test-js.js", PageController, :test_js
+  end
+  #only for api
+  scope "/chat", BlogTest do
+    pipe_through [:chat,:csrf]
+    post "/:id/change-user-room", RoomController, :change_user_room
   end
 
   scope "/auth", BlogTest do

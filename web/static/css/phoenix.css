@@ -69,3 +69,7 @@ div#user_typing_status small.text-muted {
   clear:both;
   display: block;
 }
+
+.friend-list li a.clearfix.no_cursor {
+    cursor: default;
+}

@@ -1,0 +1,49 @@
+<div class="box box-success">
+  <div class="box-header">
+    <i class="fa fa-comments-o"></i>
+
+    <h3 class="box-title">Room <%= @room.name %></h3>
+
+    <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+      <div class="btn-group btn-group-status" data-toggle="btn-toggle">
+        <button type="button" class="btn btn-default btn-sm active" title="online"><i class="fa fa-square text-green" ></i>
+        </button>
+        <button type="button" class="btn btn-default btn-sm" title="busy"><i class="fa fa-square text-red"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="box-body chat" id="chat-box">
+    <!-- chat item -->
+    <div class="chat-box-single-line">
+            <abbr class="timestamp"><%= Timex.format!(Timex.today, "%B %dth, %Y", :strftime) %></abbr>
+    </div>
+    <%= for message <- @room_messages do %>
+        <div class="item">
+          <img src="<%= logo_image(message.user) %>" class="online" alt="<%= user_full_name(message.user) %>">
+          <p class="message">
+            <a href="#" class="name">
+              <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> <%= message_time(message.inserted_at) %></small>
+              <%= user_full_name(message.user) %>
+            </a>
+            <%= message.content %>
+          </p>
+        <!-- /.attachment -->
+      </div>
+    <% end %>
+    <!-- /.item -->
+  </div>
+  <!-- /.chat -->
+  <div class="box-footer">
+    <div class="input-group">
+      <input class="form-control" placeholder="Type message..." id="chat-input">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-success" id="broad_cast_chat"><i class="fa fa-plus"></i></button>
+      </div>
+
+    </div>
+    <div class="clear"></div>
+    <div id="user_typing_status">
+
+    </div>
+  </div>
+</div>

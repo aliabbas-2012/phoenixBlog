@@ -62,6 +62,33 @@ $(document).ready(function() {
       $(this).closest("div.panel-body").remove();
   })
 
+  // change user room
+  $(document).on("click","a.change_user_room", event => {
+      console.log(event.currentTarget);
+      const csrf = $('meta[name="csrf-token"]').attr('content');
+      const link = $(event.currentTarget).attr('data_href');
+      $.ajax(link, {
+          headers: {
+            "X-CSRF-TOKEN": csrf
+          },
+          data: {
+              "_csrf_token": csrf,
+          },
+          type:"post",
+          //dataType: "json",
+          success: function(data) {
+            $("#chat_room").html(data);
+            window.createSocket($("input#room_id").val(),$("input#auth_token").val());
+            let messagesContainer = $("#chat-box");
+            $(messagesContainer).scrollTop(messagesContainer[0].scrollHeight)
+          },
+          error: function() {
+
+          }
+      });
+
+  });
+
 
 });
 
