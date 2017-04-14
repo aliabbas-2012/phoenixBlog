@@ -2,10 +2,3 @@
 <input type="hidden" id="auth_token" value="<%= @conn.assigns[:auth_token] %>" />
 
 <%= render "_chat_box.html", room: @room,room_messages: @room_messages %>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    window.createSocket('<%= @room.id %>','<%= @conn.assigns[:auth_token] %>');
-    var messagesContainer = $("#chat-box");
-    $(messagesContainer).scrollTop(messagesContainer[0].scrollHeight)
-  });
-</script>

@@ -223,11 +223,11 @@ const createSocket = (roomId,authToken) => {
       $("#user_typing_status").append(msg_typing_html);
     }
   }
-  // leaving room 
+  // leaving room
   let renderLeaveRoom = (message) => {
      console.log("-----leaving ----room--")
      console.log(message)
-
+     /*
      let msg_html =`<div class="item text-center">
        <div class="chat-box-left-room-line">
          <abbr class="left_room">
@@ -238,7 +238,8 @@ const createSocket = (roomId,authToken) => {
        </div>
      </div>`
      messagesContainer.append(msg_html);
-     $(messagesContainer).scrollTop(messagesContainer[0].scrollHeight)
+     $(messagesContainer).scrollTop(messagesContainer[0].scrollHeight);
+     */
   }
   //render messages call
   channel.on("room_msg", message => renderMessage(message))
