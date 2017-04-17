@@ -22,6 +22,7 @@ defmodule BlogTest.Mixfile do
                     :phoenix_ecto, :postgrex,:bamboo,
                     :ueberauth,:ueberauth_github,:ueberauth_facebook,
                     :timex,:timex_ecto,:arc_ecto,
+                    :oauth,
                     # :ex_aws,:hackney
                     ]]
   end
@@ -45,6 +46,7 @@ defmodule BlogTest.Mixfile do
      {:bamboo, "~> 0.7"},
      {:bamboo_smtp, "~> 1.2.1"},
      {:ueberauth, "~> 0.4"},
+     {:oauth, github: "tim/erlang-oauth"},
      {:ueberauth_github, "~> 0.4"},
      {:ueberauth_facebook, "~> 0.6"},
 
@@ -53,6 +55,7 @@ defmodule BlogTest.Mixfile do
      { :uuid, "~> 1.1" },
      {:arc, "0.7.0"},
      {:arc_ecto, "~> 0.6.0"},
+     {:dogma, ">= 0.0.0", only: [:dev, :test]}
      # If using Amazon S3:
     #  {:ex_aws, "~> 1.1"},
     #  {:hackney, "~> 1.6"},
