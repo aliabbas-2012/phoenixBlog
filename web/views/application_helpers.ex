@@ -4,6 +4,7 @@ defmodule BlogTest.ApplicationHelpers do
   """
   use Timex
   use Phoenix.HTML
+  require IEx
 
   def user_full_name(changeset) do
       if changeset do
@@ -49,4 +50,25 @@ defmodule BlogTest.ApplicationHelpers do
     end
   end
 
+  def split_names(auth) do
+    IO.puts "----------------"
+    IO.inspect auth
+    IEx.pry
+    map = %{}
+    if Map.get(auth,:name)!=nil do
+      names = String.split(auth.name)
+      map = Map.put(map,:first_name,List.first(names))
+      if Enum.count(names)>1 do
+        map = Map.put(map,:last_name,List.first(names))
+      end
+    end
+
+    if Map.get(auth,:first_name) !=nil do
+      map = Map.put(map,:first_name,auth.first_name)
+    end
+    if Map.get(auth,:last_name) !=nil do
+      map = Map.put(map,:last_name,auth.last_name)
+    end
+    map
+  end
 end

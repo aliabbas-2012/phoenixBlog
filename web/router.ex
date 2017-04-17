@@ -3,7 +3,7 @@ defmodule BlogTest.Router do
 
 
   pipeline :browser do
-    plug :accepts, ["html","jpg","js"]
+    plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
     # plug :protect_from_forgery
@@ -52,6 +52,8 @@ defmodule BlogTest.Router do
       get "/edit-password", ProfileController,:edit_password
       put "/update-password", ProfileController,:update_password
     end
+
+
   end
 
   scope "/remote", BlogTest do
@@ -63,13 +65,16 @@ defmodule BlogTest.Router do
     pipe_through [:chat,:csrf]
     post "/:id/change-user-room", RoomController, :change_user_room
   end
-
   scope "/auth", BlogTest do
-    pipe_through :browser
-    resources "/", AuthController
+    pipe_through [:browser] # Use the default browser stack
+    resources "/", AuthController,only: [:new,:create,:delete]
+
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
+
   end
+
+
 
   # Other scopes may use custom stacks.
   # scope "/api", BlogTest do

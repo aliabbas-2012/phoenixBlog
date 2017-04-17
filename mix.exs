@@ -19,7 +19,8 @@ defmodule BlogTest.Mixfile do
   def application do
     [mod: {BlogTest, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex,:bamboo,:ueberauth,:ueberauth_facebook,
+                    :phoenix_ecto, :postgrex,:bamboo,
+                    :ueberauth,:ueberauth_github,:ueberauth_facebook,
                     :timex,:timex_ecto,:arc_ecto,
                     # :ex_aws,:hackney
                     ]]
@@ -44,7 +45,9 @@ defmodule BlogTest.Mixfile do
      {:bamboo, "~> 0.7"},
      {:bamboo_smtp, "~> 1.2.1"},
      {:ueberauth, "~> 0.4"},
+     {:ueberauth_github, "~> 0.4"},
      {:ueberauth_facebook, "~> 0.6"},
+
      {:timex, "~> 3.0"},
      {:timex_ecto, "~> 3.0"},
      { :uuid, "~> 1.1" },

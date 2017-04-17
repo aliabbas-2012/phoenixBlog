@@ -39,9 +39,15 @@ config :blog_test, BlogTest.Mailer,
 
   config :ueberauth, Ueberauth,
     providers: [
-      facebook: { Ueberauth.Strategy.Github, [] }
+      github: { Ueberauth.Strategy.Github, [] },
+      facebook: {Ueberauth.Strategy.Facebook, [default_scope: "email,public_profile"]}
     ]
 
- config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
-    client_id: System.get_env("FACEBOOK_CLIENT_ID"),
-    client_secret: System.get_env("FACEBOOK_CLIENT_SECRET")
+config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
+    client_id: "250757815391796",
+    client_secret: "15f3687648ccc065bd0399cf88477a04"
+    # redirect_uri: "http://localhost:4000/auth/facebook/callback"
+
+config :ueberauth, Ueberauth.Strategy.Github.OAuth,
+  client_id: "67879a9b43308c6592e2",
+  client_secret: "902d63915d0c29bb7107ffd16293aec4a6e948fa"
