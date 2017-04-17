@@ -6,6 +6,15 @@ defmodule BlogTest do
   def start(_type, _args) do
     import Supervisor.Spec
 
+    #for writing content for
+    spawn fn ->
+      :ets.new :phoenix, [:public, :named_table]
+      receive do
+        :exit ->
+          :ok
+      end
+    end
+
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
@@ -15,13 +24,16 @@ defmodule BlogTest do
       # Start your own worker by calling: BlogTest.Worker.start_link(arg1, arg2, arg3)
       # worker(BlogTest.Worker, [arg1, arg2, arg3]),
       # ... For chat to which user is online or not
-      # supervisor(BlogTest.Presence, []),
+      supervisor(BlogTest.Presence, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: BlogTest.Supervisor]
     Supervisor.start_link(children, opts)
+
+
+
   end
 
   # Tell Phoenix to update the endpoint configuration

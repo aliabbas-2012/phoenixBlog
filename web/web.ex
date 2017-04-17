@@ -55,6 +55,16 @@ defmodule BlogTest.Web do
       import BlogTest.ErrorHelpers
       import BlogTest.Gettext
       import BlogTest.ApplicationHelpers
+      #for writing content for
+      def content_for name , do: block do
+        :ets.insert :phoenix, {name, block}
+        nil
+      end
+
+      def yield(name) do
+        fun = :ets.lookup(:phoenix, name)
+        |> Keyword.get(name)
+      end
     end
   end
 

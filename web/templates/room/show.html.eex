@@ -49,10 +49,12 @@
   <section class="col-lg-1"></section>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    window.createSocket('<%= @room.id %>','<%= @conn.assigns[:auth_token] %>');
-    var messagesContainer = $("#chat-box");
-    $(messagesContainer).scrollTop(messagesContainer[0].scrollHeight)
-  });
-</script>
+<%= content_for :footer_js do %>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      window.createSocket('<%= @room.id %>','<%= @conn.assigns[:auth_token] %>');
+      var messagesContainer = $("#chat-box");
+      $(messagesContainer).scrollTop(messagesContainer[0].scrollHeight)
+    });
+  </script>
+<% end %>

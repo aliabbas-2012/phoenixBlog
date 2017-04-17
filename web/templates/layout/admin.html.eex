@@ -355,6 +355,8 @@
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
+
+
 <!-- ./wrapper -->
 
   <!-- jQuery 2.2.3 -->
@@ -372,5 +374,15 @@
   <script src="<%= static_path(@conn, "/js/adminlte/app.min.js") %>"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="<%= static_path(@conn, "/js/adminlte/demo.js") %>"></script>
+
+  <%=  if @conn.assigns[:user] do  %>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        window.createLoginSocket('<%= @conn.assigns[:auth_token] %>');
+      });
+    </script>
+    <%= yield(:footer_js) %>
+  <% end %>
+
 </body>
 </html>
