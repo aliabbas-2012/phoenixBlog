@@ -6,6 +6,7 @@ defmodule BlogTest.RoomChannel do
   alias BlogTest.Repo
   alias BlogTest.User
   alias BlogTest.Message
+  alias BlogTest.Notification
   alias BlogTest.Image
   alias BlogTest.ApplicationHelpers
   import Ecto.Query
@@ -93,7 +94,14 @@ defmodule BlogTest.RoomChannel do
  defp save_message(%{body: body, sender: sender,sender_id: sender_id} = payload,socket,room_id) do
    message_params = %{user_id: sender_id,room_id: room_id,content: body}
    IO.inspect message_params
-   Message.changeset(%Message{}, message_params) |> Repo.insert!
+   message = Message.changeset(%Message{}, message_params) |> Repo.insert!
+   save_notification(message)
+
+ end
+ #save message
+ defp save_notification(message,is_seen \\ false) do
+   message_params = %{message_id: message.id,is_seen: is_seen}
+   Notification.changeset(%Notification{}, message_params) |> Repo.insert!
  end
  #send message to users
  defp send_message(%{body: body, sender: sender,sender_id: sender_id} = payload,socket,room_id) do

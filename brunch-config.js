@@ -15,7 +15,8 @@ exports.config = {
       order: {
         before: [
           "web/static/vendor/js/moment.js",
-          "web/static/vendor/js/underscore-min.js"
+          "web/static/vendor/js/underscore-min.js",
+          "web/static/vendor/js/jquery-bootstrap-purr.js"
         ]
       }
     },

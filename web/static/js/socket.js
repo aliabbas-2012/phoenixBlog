@@ -7,6 +7,7 @@
 
 import {Socket,Presence} from "phoenix"
 import LoginOperations from "./login_operations"
+import NotificationOperations from "./notification_operations"
 import ChatOperations from "./chat_operations"
 
 // let first defined which is user is online
@@ -82,7 +83,23 @@ const createLoginSocket = (authToken) => {
     })
 
 }
+//notification channel
+const createNotificationSocket = (authToken) => {
+    let channel = socket.channel(`notification:room`, {auth_token: authToken})
 
+    let notify_op = new NotificationOperations(channel);
+
+    channel.join()
+      .receive("ok", resp => { console.log("Joined Notification successfully", resp) })
+      .receive("error", resp => { console.log("Unable Notification to join", resp); socket.disconnect(); })
+
+
+    //render notification history
+    channel.on("notification_history", message => notify_op.renderNotifications(message))
+
+    // channel.on("leave_notification_room", message => notify_op.renderLeaveLoginRoom(message))
+
+}
 //only room specific chat
 //room socket
 const createSocket = (roomId,authToken) => {
@@ -125,6 +142,7 @@ const createSocket = (roomId,authToken) => {
 
 }
 window.createLoginSocket = createLoginSocket;
+window.createNotificationSocket = createNotificationSocket;
 window.createSocket = createSocket;
 
 export default socket

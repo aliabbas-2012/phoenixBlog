@@ -8,6 +8,7 @@ defmodule BlogTest.UserSocket do
   ## Channels (example)
   channel "rooms:*", BlogTest.RoomChannel
   channel "login:*", BlogTest.LoginChannel
+  channel "notification:*", BlogTest.NotificationChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

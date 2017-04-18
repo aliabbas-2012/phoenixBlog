@@ -121,6 +121,7 @@
           </a>
           <ul class="treeview-menu">
             <%= for room <- BlogTest.Repo.all(BlogTest.Room) do %>
+              <% room = change_private_room_name(room,@conn.assigns[:user].id) %>
               <li>
                 <a href="<%= room_path(@conn,:show,room) %>">
                   <i class="fa fa-chat"></i> <span><%= room.name %></span>
@@ -379,6 +380,7 @@
     <script>
       document.addEventListener("DOMContentLoaded", function() {
         window.createLoginSocket('<%= @conn.assigns[:auth_token] %>');
+        window.createNotificationSocket('<%= @conn.assigns[:auth_token] %>');
       });
     </script>
     <%= yield(:footer_js) %>

@@ -6,6 +6,7 @@ alias BlogTest.Category
 alias BlogTest.Image
 alias BlogTest.Room
 alias BlogTest.Message
+alias BlogTest.Notification
 alias BlogTest.Repo
 import Ecto.Query
 
@@ -107,6 +108,8 @@ modela = Repo.one(from room in Room,  where: room.id == ^id )
       preload: [messages: c]
     )
 
+
+
 case Repo.get_by(AuthorizeToken, token:  auth_token) |> Repo.preload(:user)  do
   nil ->
      :error
@@ -135,3 +138,47 @@ room = Repo.one(from room in Room,
 
 
 posts = Post |> where([p], p.id in [1, 2]) |> Repo.all
+
+
+notifications = Repo.all(from n in Notification,
+     join: m in Message, on: n.id == m.message_id,
+     where: n.is_seen == false,
+     preload: [message: m]
+   )
+
+#Right but will get all
+notifications = Repo.all(from [n,m] in Notification,Message
+      join: m in Message, on: m.id == n.message_id,
+      # select: (%{room_id: m.room_id, content: m.content,id: n.id}),
+      where: (n.is_seen == false and m.room_id == 8),
+      order_by: [desc: n.inserted_at],
+      preload: [message: m],
+
+)
+#wrong ----------
+notifications = Repo.all(
+  from [p,m] in Notification, join: m in Message, on: m.id == p.message_id, preload: [message: m],
+  select: %{id: p.id, content: m.content}
+)
+
+#------------Good---------------------#
+# Create a query
+query = from n in Notification,
+        join: m in Message, on: m.id == n.message_id,
+        join: u in User, on: m.user_id == u.id,
+        where: (n.is_seen == false),
+        order_by: [desc: n.inserted_at]
+# Extend the query
+query = from [n,m,u] in query,select: {n.id, m.content,n.inserted_at,m.room_id,u.id,u.first_name,u.last_name}
+notifications = Repo.all(query)
+
+#===========================#
+# Create another query
+query = from n in Notification,
+        join: m in Message, on: m.id == n.message_id,
+        join: u in User, on: m.user_id == u.id,
+        where: (n.is_seen == false),
+        order_by: [desc: n.inserted_at]
+# Extend the query
+query = from [n,m,u] in query,select: %{id: n.id, content: m.content,inserted_at: n.inserted_at,room_id: m.room_id,user_id: u.id,first_name: u.first_name,last_name: u.last_name}
+notifications = Repo.all(query)

@@ -71,4 +71,14 @@ defmodule BlogTest.ApplicationHelpers do
     end
     map
   end
+
+  def change_private_room_name(room,current_user_id) do
+    if room.room_type=="private" do
+      requested_user_id = current_user_id ==  room.user_id && room.user_id_2 || room.user_id
+      requested_user =  BlogTest.Repo.get(BlogTest.User,requested_user_id)
+      #change the room name
+      room = Map.put(room, :name, user_full_name(requested_user))
+    end
+    room
+  end
 end

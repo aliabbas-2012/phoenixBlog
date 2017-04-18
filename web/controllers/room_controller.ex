@@ -21,6 +21,7 @@ defmodule BlogTest.RoomController do
       |> redirect(to: page_path(conn, :index))
     end
     room = Repo.get!(Room,id)
+    room = change_private_room_name(room, conn.assigns[:user].id)
     room_messages = Repo.all(
         from m in Message,
         where: m.room_id == ^id,
