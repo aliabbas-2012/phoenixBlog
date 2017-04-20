@@ -112,24 +112,27 @@
             <li><a href="<%= post_path(@conn,:index) %>"><i class="fa fa-circle-o"></i> Post</a></li>
           </ul>
         </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-users"></i> <span>Chat Rooms</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <%= for room <- BlogTest.Repo.all(BlogTest.Room) do %>
-              <% room = change_private_room_name(room,@conn.assigns[:user].id) %>
-              <li>
-                <a href="<%= room_path(@conn,:show,room) %>">
-                  <i class="fa fa-chat"></i> <span><%= room.name %></span>
-                </a>
-              </li>
-            <% end %>
-          </ul>
-        </li>
+        <%= if @conn.assigns[:user] do %>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-users"></i> <span>Chat Rooms</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+
+              <ul class="treeview-menu">
+                <%= for room <- BlogTest.Repo.all(BlogTest.Room) do %>
+                  <% room = change_private_room_name(room,@conn.assigns[:user].id) %>
+                  <li>
+                    <a href="<%= room_path(@conn,:show,room) %>">
+                      <i class="fa fa-chat"></i> <span><%= room.name %></span>
+                    </a>
+                  </li>
+                <% end %>
+              </ul>
+          </li>
+        <% end %>
 
 
       </ul>

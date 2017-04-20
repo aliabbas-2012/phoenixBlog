@@ -22,7 +22,8 @@
             // Add the 'alert' and 'bootstrap-purr' classes for distinguishing
             // other Bootstrap alerts
             .addClass('alert bootstrap-purr')
-            .attr('role', 'alert');
+            .attr('role', 'alert').attr('data-room-id',options.room_id)
+            .attr('data-sender-id',options.sender_id)
 
         // If the 'type' is set, then add the relevant alert-* class name
         if (isString(options.type) && /^DANGER|INFO|SUCCESS|WARNING$/i.test(options.type)) {
@@ -49,6 +50,9 @@
                 .attr('data-dismiss', 'alert')
                 .attr('aria-label', 'Close');
 
+            var $alert_info = $('<h4/>');
+            $alert_info.html('<i class="icon fa fa-info"></i>'+options.sender)
+
             // The small 'x' in the top right hand corner
             var $cross = $('<span/>')
                 .attr('aria-hidden', 'true')
@@ -59,7 +63,7 @@
 
             // Append the close button to the alert and add the class
             // that specifies it's dimissible
-            $alert.append($button)
+            $alert.append($button).append($alert_info)
                 .addClass('alert-dismissible');
         }
 
@@ -327,6 +331,10 @@
     $.bootstrapPurr.options = {
         // Default parent element to append the alert to
         element: 'body',
+        sender : '',
+        sender_id: 0,
+
+        room_id: 0,
 
         // Type of alert. See Bootstrap documentation for any additional supported formats
         type: 'info', // (null|'default', 'info', 'danger', 'success')
@@ -351,7 +359,7 @@
         allow_dismiss_type: 'click', // ('click', 'hover')
 
         // Delay for 'on fade out' in milliseconds
-        delay: 5000, // (number)
+        delay: 10000, // (number)
 
         // Whether the alert should be draggable using the primary mouse button
         draggable: true, // (true, false)

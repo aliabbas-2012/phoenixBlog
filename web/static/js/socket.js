@@ -96,6 +96,7 @@ const createNotificationSocket = (authToken) => {
 
     //render notification history
     channel.on("notification_history", message => notify_op.renderNotifications(message))
+    channel.on("notification_alert", message => notify_op.renderNotificationAlert(message))
 
     // channel.on("leave_notification_room", message => notify_op.renderLeaveLoginRoom(message))
 

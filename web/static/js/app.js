@@ -88,8 +88,12 @@ $(document).ready(function() {
       });
 
   });
-
-
+  
+  $(document).on("click","div.alert.bootstrap-purr.alert-info.alert-dismissible", event => {
+    if($(event.currentTarget).attr('data-sender-id')!=0){
+      $("a.clearfix.change_user_room[data_user_id='" + $(event.currentTarget).attr('data-sender-id') +"']").trigger("click");
+    }
+  });
 });
 
 // Import local files

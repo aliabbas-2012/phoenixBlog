@@ -33,7 +33,11 @@ defmodule BlogTest.RoomChannel do
           sender_logo: ApplicationHelpers.logo_image(msg_sender),
           timestamp: :os.system_time(:millisecond)
         }
+
    broadcast! socket, "room_msg", message
+
+
+
    #save message to database
    save_message(message,socket,List.last(String.split(socket.topic,":")))
    {:noreply, socket}
@@ -95,13 +99,26 @@ defmodule BlogTest.RoomChannel do
    message_params = %{user_id: sender_id,room_id: room_id,content: body}
    IO.inspect message_params
    message = Message.changeset(%Message{}, message_params) |> Repo.insert!
-   save_notification(message)
+   save_notification(message,socket.assigns.auth.user)
 
  end
  #save message
- defp save_notification(message,is_seen \\ false) do
+ defp save_notification(message,is_seen \\ false,sender) do
    message_params = %{message_id: message.id,is_seen: is_seen}
-   Notification.changeset(%Notification{}, message_params) |> Repo.insert!
+   notification = Notification.changeset(%Notification{}, message_params) |> Repo.insert!
+   IO.inspect "---ntddd---"
+   IO.inspect notification
+   notification_msg = %{
+          body: message.content,
+          room_id: message.room_id,
+          sender: ApplicationHelpers.user_full_name(sender),
+          sender_id: sender.id,
+          id: notification.id,
+          is_seen: notification.is_seen,
+          # leaving_by: ApplicationHelpers.user_full_name(socket.assigns.auth.user),
+          timestamp: notification.inserted_at
+        }
+   BlogTest.Endpoint.broadcast("notification:room", "notification_alert", notification_msg)
  end
  #send message to users
  defp send_message(%{body: body, sender: sender,sender_id: sender_id} = payload,socket,room_id) do
