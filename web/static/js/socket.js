@@ -78,7 +78,7 @@ const createLoginSocket = (authToken) => {
     statusInput.on("click",(event)=> {
        //event.preventDefault();
        console.log("------pushing  status -----");
-       $("div.current-login-status>a").html( `<i class="${user_status_class($(event.currentTarget).attr("title"))}"></i> ${$(event.currentTarget).attr("title").toCapitalize()}`)
+       $("div.current-login-status>a").html( `<i class="${LoginOperations.user_status_class($(event.currentTarget).attr("title"))}"></i> ${$(event.currentTarget).attr("title").toCapitalize()}`)
        channel.push('new_status', { status: $(event.currentTarget).attr("title") });
     })
 

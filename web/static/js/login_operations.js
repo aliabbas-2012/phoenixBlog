@@ -46,12 +46,13 @@ export default class LoginOperations{
      let online_list = Presence.list(presences, this._listBy);
     //  debugger;
      let that = this;
+    //  console.log(that.constructor.user_status_class(presence.metas[0].status));
 
      $("ul.friend-list li").each(function(){
         if(typeof(presences[$(this).find("a.clearfix").attr('data_user_id')])!="undefined"){
 
          let presence = presences[$(this).find("a.clearfix").attr('data_user_id')];
-  
+
           //for case only message
           $(this).find("small.chat-alert-status").find("i").attr("class",that.constructor.user_status_class(presence.metas[0].status));
           $(this).find("small.chat-alert-status").find("i").attr("title",presence.metas[0].status.toCapitalize() );
