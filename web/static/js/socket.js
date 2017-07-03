@@ -6,9 +6,7 @@
 
 
 import {Socket,Presence} from "phoenix"
-import LoginOperations from "./login_operations"
-import NotificationOperations from "./notification_operations"
-import ChatOperations from "./chat_operations"
+import {LoginOperations,NotificationOperations,ChatOperations} from "./export"
 
 // let first defined which is user is online
 
