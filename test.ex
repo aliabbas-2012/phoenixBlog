@@ -8,7 +8,7 @@ alias BlogTest.Room
 alias BlogTest.Message
 alias BlogTest.Repo
 import Ecto.Query
-
+# test comment
 post_params = %{title: "Post a 1",content: "Test content 21"}
 changeset = Post.changeset(%BlogTest.Post{}, post_params)
 |> Ecto.Changeset.put_change(:user_id,1)
